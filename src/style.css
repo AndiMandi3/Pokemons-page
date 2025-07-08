@@ -1,16 +1,15 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, Avenir, "Flexo-Regular", Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  font-size: 16px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  height: 100%;
 }
 
 a {
@@ -23,9 +22,10 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
+  background: #424242 url("img/body_bg.png");
+  color: #fff;
+
+
   min-width: 320px;
   min-height: 100vh;
 }
@@ -35,32 +35,15 @@ h1 {
   line-height: 1.1;
 }
 
-#app {
-  max-width: 1280px;
+.app {
+  box-sizing: border-box;
+  background: #fff url("img/container_bg.png");
+  clear: both;
+  display: block;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #3178c6aa);
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  max-width: 1280px;
+  overflow: hidden;
+  position: relative;
 }
 
 button {
@@ -93,4 +76,34 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+
+.section {
+  background: transparent url("img/content_bg.png") left top;
+  background-size: 100% 1px;
+  display: block;
+  margin: 0 auto;
+  max-width: 1024px;
+  width: 100%;
+}
+
+.section-title {
+    color: #919191;
+    cursor: default;
+    font-size: 187.5%;
+    line-height: 125%;
+    text-transform: none;
+    font-family: "Flexo-Regular", arial, sans-serif;
+}
+
+.section.pokeheader::before{
+    content: "";
+    display: table;
+}
+
+.section.pokeheader::after{
+    clear:both;
+    content: "";
+    display: table;
 }
