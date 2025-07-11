@@ -37,13 +37,18 @@ h1 {
 
 .app {
   box-sizing: border-box;
-  background: #fff url("img/container_bg.png");
+  background: #fff;
   clear: both;
   display: block;
   margin: 0 auto;
   max-width: 1280px;
   overflow: hidden;
   position: relative;
+}
+label {
+  font-family: "Flexo-Regular", arial, sans-serif;
+  font-size: 25px;
+  margin-top: 10px;
 }
 
 button {
@@ -80,7 +85,7 @@ button:focus-visible {
 
 
 .section {
-  background: transparent url("img/content_bg.png") left top;
+  background-color: white;
   background-size: 100% 1px;
   display: block;
   margin: 0 auto;
@@ -106,4 +111,45 @@ button:focus-visible {
     clear:both;
     content: "";
     display: table;
+}
+
+.filter {
+  background-color: #313131;
+  display: flex;
+  gap: normal;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.filter * {
+  border-radius: 5px;
+}
+
+.left-side, .right-side {
+  display: inherit;
+  flex-direction: column;
+}
+
+.search {
+  display: inherit;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#search-input {
+  width: auto;
+  padding: 10px;
+  height: auto;
+}
+
+.search-button {
+  background: #EE6B2F url("img/input-search-bg.png") center center no-repeat;
+  padding: 21px 12px;
+  color: transparent;
+}
+
+.search-banner {
+  background-color: #4dad5b;
+  padding: 20px;
+
 }
