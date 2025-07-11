@@ -113,16 +113,19 @@ button:focus-visible {
     display: table;
 }
 
-.filter {
+.filter-section {
   background-color: #313131;
+}
+
+.filter-section *  {
+  border-radius: 5px;
+}
+
+.filter-header, .filters-wrap {
   display: flex;
   gap: normal;
   justify-content: space-around;
   align-items: center;
-}
-
-.filter * {
-  border-radius: 5px;
 }
 
 .left-side, .right-side {
@@ -136,7 +139,7 @@ button:focus-visible {
   margin-top: 10px;
 }
 
-#search-input {
+input {
   width: auto;
   padding: 10px;
   height: auto;
@@ -151,5 +154,57 @@ button:focus-visible {
 .search-banner {
   background-color: #4dad5b;
   padding: 20px;
+}
 
+.filter-title {
+  display: inherit;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.pokedex-filter-list {
+  margin-top: 20px;
+  list-style: none;
+  column-count: 2;
+}
+
+.pill {
+  border-radius: 5px;
+  text-align: center;
+  padding: 13px 31px;
+  background-color: #4dad5b;
+}
+
+
+.pokedex-filter-list div span {
+  cursor: pointer;
+  text-align: center;
+  margin-right: 10px;
+  float: left;
+}
+
+.pokedex-filter-list div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pokedex-filter-list div .type-filter, .pokedex-filter-list div .weakness-filter{
+  background-color: white;
+  color: black;
+  float: left;
+  border-radius: 15px;
+  width: 28px;
+  height: 28px;
+}
+
+.number-range {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  input {
+    width: 25%;
+  }
 }

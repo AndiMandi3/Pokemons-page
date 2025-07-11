@@ -11,20 +11,71 @@
       <section class="section pokeheader">
         <h1 class="section-title">Pokédex</h1>
       </section>
-      <section class="filter">
-        <div class="left-side">
-          <label for="search-input">Name or Number</label>
+      <section class="filter-section">
+        <div class="filter-header">
+          <div class="left-side">
+            <label for="search-input">Name or Number</label>
             <div class="search">
               <input id="search-input" type="text" placeholder="Name or Number">
               <input type="submit" value="Search" class="search-button">
             </div>
-          <p class="subtitle">Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!</p>
+            <p class="subtitle">Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!</p>
           </div>
-        <div class="right-side">
-          <p class="search-banner">Search for a Pokémon by name or using its National Pokédex number.</p>
+          <div class="right-side">
+            <p class="search-banner">Search for a Pokémon by name or using its National Pokédex number.</p>
+          </div>
         </div>
+        <div class="filters-wrap">
+          <div class="left-side">
+            <div class="filter-title">
+              <h2>Type & Weakness</h2>
+              <div class="filter-help">
+                <span><b>T</b> = Type</span>
+                <span><b>W</b> = Weakness</span>
+              </div>
+            </div>
+            <div class="pokedex-filter-list">
+              <div>
+                <span class="pill">Bug</span>
+                <span class="filter type-filter toggle">T</span>
+                <span class="filter weakness-filter toggle">W</span>
+              </div>
+              <div>
+                <span class="pill">Bug</span>
+                <span class="filter type-filter toggle">T</span>
+                <span class="filter weakness-filter toggle">W</span>
+              </div>
+              <div>
+                <span class="pill">Bug</span>
+                <span class="filter type-filter toggle">T</span>
+                <span class="filter weakness-filter toggle">W</span>
+              </div>
+              <div>
+                <span class="pill">Bug</span>
+                <span class="filter type-filter toggle">T</span>
+                <span class="filter weakness-filter toggle">W</span>
+              </div>
+            </div>
+            <div class="number-range">
+              <h3>Number Range</h3>
+              <div class="range-boxes">
+                <input type="text" id="minRangeBox" value="1">
+                <span style="padding: 0 10px;">-</span>
+                <input type="text" id="maxRangeBox" value="1025">
+              </div>
+            </div>
+          </div>
+<!--          <div class="right-side">-->
+<!--            <h3>Ability</h3>-->
+<!--          </div>-->
+
+
+        </div>
+
       </section>
-      <section class="section sort"></section>
+      <section class="section sort">
+
+      </section>
       <section class="section result"></section>
     </div>
     <script type="module" src="/src/main.ts"></script>
