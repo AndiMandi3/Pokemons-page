@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -65,16 +65,66 @@
               </div>
             </div>
           </div>
-<!--          <div class="right-side">-->
-<!--            <h3>Ability</h3>-->
-<!--          </div>-->
-
-
+          <div class="right-side">
+            <div class="abilities-filter">
+              <h2>Ability</h2>
+              <span class="select-custom" id="">
+                <select name="ability-selector" id="ability-selector">
+                  <option value="0" selected>Anger Point</option>
+                  <option value="1">Adaptability</option>
+                  <option value="2">Aftermath</option>
+                </select>
+              </span>
+            </div>
+            <div class="pokemon-height-filter">
+              <h2>Height</h2>
+              <ul class="pokedex-filter-height-list height">
+                <li>
+                  <span class="icon icon-filter-height-small"></span>
+                </li>
+                <li>
+                  <span class="icon icon-filter-height-medium"></span>
+                </li>
+                <li>
+                  <span class="icon icon-filter-height-small"></span>
+                </li>
+              </ul>
+            </div>
+            <div class="pokemon-weight-filter">
+              <h2>Weight</h2>
+              <ul class="pokedex-filter-height-list height">
+                <li>
+                  <span class="icon icon-filter-height-small"></span>
+                </li>
+                <li>
+                  <span class="icon icon-filter-height-medium"></span>
+                </li>
+                <li>
+                  <span class="icon icon-filter-height-small"></span>
+                </li>
+              </ul>
+            </div>
+            <div class="filter-action">
+              <button type="button" class="button button-gray" id="reset"> Reset </button>
+              <button type="button" class="button button-orange" id="advSearch"> Search </button>
+            </div>
+          </div>
         </div>
-
       </section>
       <section class="section sort">
-
+        <div class="actions">
+          <button type="button" class="button button-blue" id="showAdvSearch">Show Advanced Search</button>
+          <div class="sort-div">
+            <label for="sort-selector">Sort By</label>
+            <span class="select-custom" id="">
+                <select name="sort-selector" id="sort-selector">
+                  <option value="0" selected>Anger Point</option>
+                  <option value="1">Adaptability</option>
+                  <option value="2">Aftermath</option>
+                </select>
+              </span>
+          </div>
+        </div>
       </section>
       <section class="section result"></section>
     </div>

@@ -51,23 +51,38 @@ label {
   margin-top: 10px;
 }
 
+ul, li {
+  list-style: none;
+  padding: 0;
+}
+
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #ccc;
+  border-radius: 5px;
+  border: none;
+  clear: both;
+  color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  font-size: 105%;
+  float: left;
+  line-height: 125%;
+  margin: 1.5625%;
+  padding: 0.75em 1.25em 0.675em;
+  vertical-align: middle;
+  text-align: center;
+  text-transform: none;
 }
-button:hover {
-  border-color: #646cff;
+
+.button-gray {
+  background-color: #ccc;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.button-orange {
+  background-color: #ee6b2f;
+}
+
+.button-blue {
+  background-color: #30a7d7;
 }
 
 @media (prefers-color-scheme: light) {
@@ -91,6 +106,7 @@ button:focus-visible {
   margin: 0 auto;
   max-width: 1024px;
   width: 100%;
+  margin-top: 20px;
 }
 
 .section-title {
@@ -131,6 +147,7 @@ button:focus-visible {
 .left-side, .right-side {
   display: inherit;
   flex-direction: column;
+  width: 35%;
 }
 
 .search {
@@ -165,7 +182,6 @@ input {
 
 .pokedex-filter-list {
   margin-top: 20px;
-  list-style: none;
   column-count: 2;
 }
 
@@ -207,4 +223,70 @@ input {
   input {
     width: 25%;
   }
+}
+
+.select-custom {
+  position: relative;
+  display: inline-block;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
+  padding: 5px;
+  font-family: sans-serif;
+}
+
+.select-custom select {
+  appearance: none;
+  background-color: #999;
+  color: #000;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  width: 200px;
+}
+
+.select-custom::after {
+  content: "▾";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  pointer-events: none;
+}
+
+.pokedex-filter-height-list, .pokedex-filter-weight-list {
+  float: left;
+  height: 80px;
+  margin-bottom: 0.5em;
+  width: 100%;
+  display: inline-block;
+}
+
+.pokedex-filter-height-list li, .pokedex-filter-weight-list li {
+  float: left;
+  width: 27.46%;
+  background-color: #F2F2F2;
+  border-radius: 12px;
+  color: #313131;
+  cursor: pointer;
+  height: 100%;
+  margin: 0 2%;
+  overflow: hidden;
+}
+
+.filter-action {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 35px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.sort-div label {
+  color: #333;
 }
