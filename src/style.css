@@ -290,3 +290,42 @@ input {
 .sort-div label {
   color: #333;
 }
+
+.result-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.result .result-row .result-item {
+  margin-bottom: 50px;
+}
+
+.result .result-row .result-item a {
+  background-color: #F2F2F2;
+  display: block;
+  border-radius: 15px;
+}
+
+.result .result-row .result-item p {
+  color: #919191;
+  margin-bottom: 5px;
+}
+
+.result .result-row .result-item h5 {
+  color: black;
+  font-size: 23px;
+  margin: 5px 0;
+}
+
+.result .result-row .result-item .abilities span {
+  padding: 2px 25px;
+  font-size: 12px;
+}
+
+.full-content {
+  display: flex;
+  justify-content: center;
+}
