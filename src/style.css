@@ -3,7 +3,6 @@
   line-height: 1.5;
   font-weight: 400;
   font-size: 16px;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -11,6 +10,51 @@
   
   height: 100%;
 }
+
+/* CSS-Reset rules */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* CSS-Reset rules end */
 
 a {
   font-weight: 500;
@@ -24,15 +68,21 @@ a:hover {
 body {
   background: #424242 url("img/body_bg.png");
   color: #fff;
-
-
   min-width: 320px;
   min-height: 100vh;
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 32px;
   line-height: 1.1;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 20px 0;
 }
 
 .app {
@@ -46,7 +96,6 @@ h1 {
   position: relative;
 }
 label {
-  font-family: "Flexo-Regular", arial, sans-serif;
   font-size: 25px;
   margin-top: 10px;
 }
@@ -56,7 +105,7 @@ ul, li {
   padding: 0;
 }
 
-button {
+.button {
   background-color: #ccc;
   border-radius: 5px;
   border: none;
@@ -64,10 +113,9 @@ button {
   color: white;
   cursor: pointer;
   font-size: 105%;
-  float: left;
   line-height: 125%;
-  margin: 1.5625%;
-  padding: 0.75em 1.25em 0.675em;
+  margin: 6.5px;
+  padding: 12px 21px;
   vertical-align: middle;
   text-align: center;
   text-transform: none;
@@ -112,22 +160,9 @@ button {
 .section-title {
     color: #919191;
     cursor: default;
-    font-size: 187.5%;
-    line-height: 125%;
     text-transform: none;
-    font-family: "Flexo-Regular", arial, sans-serif;
 }
 
-.section.pokeheader::before{
-    content: "";
-    display: table;
-}
-
-.section.pokeheader::after{
-    clear:both;
-    content: "";
-    display: table;
-}
 
 .filter-section {
   background-color: #313131;
@@ -153,7 +188,7 @@ button {
 .search {
   display: inherit;
   gap: 10px;
-  margin-top: 10px;
+  margin: 20px 0;
 }
 
 input {
@@ -197,7 +232,7 @@ input {
   cursor: pointer;
   text-align: center;
   margin-right: 10px;
-  float: left;
+  line-height: normal;
 }
 
 .pokedex-filter-list div {
@@ -209,10 +244,10 @@ input {
 .pokedex-filter-list div .type-filter, .pokedex-filter-list div .weakness-filter{
   background-color: white;
   color: black;
-  float: left;
   border-radius: 15px;
   width: 28px;
   height: 28px;
+  line-height: 25px;
 }
 
 .number-range {
@@ -256,16 +291,14 @@ input {
 }
 
 .pokedex-filter-height-list, .pokedex-filter-weight-list {
-  float: left;
   height: 80px;
-  margin-bottom: 0.5em;
+  margin-bottom: 10px;
   width: 100%;
-  display: inline-block;
+  display: flex;
 }
 
 .pokedex-filter-height-list li, .pokedex-filter-weight-list li {
-  float: left;
-  width: 27.46%;
+  width: 100%;
   background-color: #F2F2F2;
   border-radius: 12px;
   color: #313131;
