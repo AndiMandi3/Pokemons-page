@@ -8,33 +8,33 @@
   </head>
   <body>
     <div class="app pokemons">
-      <section class="section pokeheader">
-        <h1 class="section-title">Pokédex</h1>
+      <section class="section pokeHeader">
+        <h1 class="pokeHeader__section-title">Pokédex</h1>
       </section>
       <section class="filter-section">
         <div class="filter-header">
           <div class="left-side">
-            <label for="search-input">Name or Number</label>
+            <label for="search__search-input">Name or Number</label>
             <div class="search">
-              <input id="search-input" type="text" placeholder="Name or Number">
-              <input type="submit" value="Search" class="search-button">
+              <input id="search__search-input" type="text" placeholder="Name or Number">
+              <input type="submit" value="Search" class="search__search-button">
             </div>
-            <p class="subtitle">Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!</p>
+            <p class="left-side__subtitle">Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!</p>
           </div>
           <div class="right-side">
-            <p class="search-banner">Search for a Pokémon by name or using its National Pokédex number.</p>
+            <p class="right-side__search-banner">Search for a Pokémon by name or using its National Pokédex number.</p>
           </div>
         </div>
         <div class="filters-wrap">
           <div class="left-side">
-            <div class="filter-title">
+            <div class="left-side__filter-title">
               <h2>Type & Weakness</h2>
-              <div class="filter-help">
+              <div class="left-side__filter-help">
                 <span><b>T</b> = Type</span>
                 <span><b>W</b> = Weakness</span>
               </div>
             </div>
-            <div class="pokedex-filter-list">
+            <div class="left-side__pokedex-filter-list">
               <div>
                 <span class="pill">Bug</span>
                 <span class="filter type-filter toggle">T</span>
@@ -56,9 +56,9 @@
                 <span class="filter weakness-filter toggle">W</span>
               </div>
             </div>
-            <div class="number-range">
+            <div class="left-side__number-range">
               <h3>Number Range</h3>
-              <div class="range-boxes">
+              <div class="number-range__range-boxes">
                 <input type="text" id="minRangeBox" value="1">
                 <span style="padding: 0 10px;">-</span>
                 <input type="text" id="maxRangeBox" value="1025">
@@ -69,42 +69,42 @@
             <div class="abilities-filter">
               <h2>Ability</h2>
               <span class="select-custom" id="">
-                <select name="ability-selector" id="ability-selector">
+                <select name="select-custom__ability-selector" id="select-custom__ability-selector">
                   <option value="0" selected>Anger Point</option>
                   <option value="1">Adaptability</option>
                   <option value="2">Aftermath</option>
                 </select>
               </span>
             </div>
-            <div class="pokemon-height-filter">
+            <div class="right-side__pokemon-height-filter">
               <h2>Height</h2>
-              <ul class="pokedex-filter-height-list height">
+              <ul class="pokedex-filter-height__list height">
                 <li>
-                  <span class="icon icon-filter-height-small"></span>
+                  <span class="icon pokedex-height-filter__small-icon"></span>
                 </li>
                 <li>
-                  <span class="icon icon-filter-height-medium"></span>
+                  <span class="icon pokedex-height-filter__medium-icon"></span>
                 </li>
                 <li>
-                  <span class="icon icon-filter-height-small"></span>
+                  <span class="icon pokedex-height-filter__high-icon"></span>
                 </li>
               </ul>
             </div>
-            <div class="pokemon-weight-filter">
+            <div class="right-side__pokemon-weight-filter">
               <h2>Weight</h2>
-              <ul class="pokedex-filter-height-list height">
+              <ul class="pokedex-weight-filter__list weight">
                 <li>
-                  <span class="icon icon-filter-height-small"></span>
+                  <span class="icon pokedex-weight-filter__small-icon"></span>
                 </li>
                 <li>
-                  <span class="icon icon-filter-height-medium"></span>
+                  <span class="icon pokedex-weight-filter__medium-icon"></span>
                 </li>
                 <li>
-                  <span class="icon icon-filter-height-small"></span>
+                  <span class="icon pokedex-weight-filter__high-icon"></span>
                 </li>
               </ul>
             </div>
-            <div class="filter-action">
+            <div class="left-side__filter-action">
               <button type="button" class="button button-gray" id="reset"> Reset </button>
               <button type="button" class="button button-orange" id="advSearch"> Search </button>
             </div>
@@ -112,9 +112,9 @@
         </div>
       </section>
       <section class="section sort">
-        <div class="actions">
-          <button type="button" class="button button-blue" id="showAdvSearch">Show Advanced Search</button>
-          <div class="sort-div">
+        <div class="sort__actions">
+          <button type="button" class="actions__button button button-blue" id="showAdvSearch">Show Advanced Search</button>
+          <div class="actions__sort-div">
             <label for="sort-selector">Sort By</label>
             <span class="select-custom" id="">
                 <select name="sort-selector" id="sort-selector">
@@ -127,182 +127,182 @@
         </div>
       </section>
       <section class="section result">
-        <div class="result-row">
-          <div class="result-item">
+        <div class="result__row">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
             </div>
           </div>
-          <div class="result-item">
+          <div class="result__item">
             <a href="#">
               <img src="src/img/001.png" alt="">
             </a>
-            <div class="pokemon-info">
-              <p class="id">
+            <div class="item__pokemon-info">
+              <p class="pokemon__id">
                 <span class="number-prefix">#</span>
                 0001</p>
               <h5>Bulbasaur</h5>
-              <div class="abilities">
+              <div class="pokemon__abilities">
                 <span class="pill">Grass</span>
                 <span class="pill">Poison</span>
               </div>
@@ -310,7 +310,7 @@
           </div>
         </div>
         <div class="full-content">
-          <button type="button" class="button button-blue" id="loadMore">Load More <b>Pokemon</b></button>
+          <button type="button" class="full-content__button button button-blue" id="loadMore">Load More <b>Pokemon</b></button>
         </div>
       </section>
     </div>

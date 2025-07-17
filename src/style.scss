@@ -11,50 +11,16 @@
   height: 100%;
 }
 
-/* CSS-Reset rules */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-/* CSS-Reset rules end */
+
+$search-button__color: #EE6B2F;
+$body__color: #fff;
+$button__default-color: #ccc;
+$button-action__color: #30a7d7;
+$filter-section__color:#313131;
+$filter-helps__color: #4dad5b;
+$filter-buttons__color: white;
+$cards__bg-color: #F2F2F2;
+
 
 a {
   font-weight: 500;
@@ -67,7 +33,7 @@ a:hover {
 
 body {
   background: #424242 url("img/body_bg.png");
-  color: #fff;
+  color: $body__color;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -87,7 +53,7 @@ h2 {
 
 .app {
   box-sizing: border-box;
-  background: #fff;
+  background: $body__color;
   clear: both;
   display: block;
   margin: 0 auto;
@@ -106,7 +72,7 @@ ul, li {
 }
 
 .button {
-  background-color: #ccc;
+  background-color: $button__default-color;
   border-radius: 5px;
   border: none;
   clear: both;
@@ -122,15 +88,15 @@ ul, li {
 }
 
 .button-gray {
-  background-color: #ccc;
+  background-color: $button__default-color;
 }
 
 .button-orange {
-  background-color: #ee6b2f;
+  background-color: $search-button__color;
 }
 
 .button-blue {
-  background-color: #30a7d7;
+  background-color: $button-action__color;
 }
 
 .section {
@@ -143,7 +109,7 @@ ul, li {
   margin-top: 20px;
 }
 
-.section-title {
+.pokeHeader__section-title {
     color: #919191;
     cursor: default;
     text-transform: none;
@@ -151,7 +117,7 @@ ul, li {
 
 
 .filter-section {
-  background-color: #313131;
+  background-color: $filter-section__color;
 }
 
 .filter-section *  {
@@ -182,25 +148,25 @@ input {
   height: auto;
 }
 
-.search-button {
-  background: #EE6B2F url("img/input-search-bg.png") center center no-repeat;
+.search__search-button {
+  background: $search-button__color url("img/input-search-bg.png") center center no-repeat;
   padding: 21px 12px;
   color: transparent;
 }
 
-.search-banner {
-  background-color: #4dad5b;
+.right-side__search-banner {
+  background-color: $filter-helps__color;
   padding: 20px;
 }
 
-.filter-title {
+.left-side__filter-title {
   display: inherit;
   flex-direction: row;
   align-items: center;
   gap: 20px;
 }
 
-.pokedex-filter-list {
+.left-side__pokedex-filter-list {
   margin-top: 20px;
   column-count: 2;
 }
@@ -209,25 +175,25 @@ input {
   border-radius: 5px;
   text-align: center;
   padding: 13px 31px;
-  background-color: #4dad5b;
+  background-color: $filter-helps__color;
 }
 
 
-.pokedex-filter-list div span {
+.left-side__pokedex-filter-list div span {
   cursor: pointer;
   text-align: center;
   margin-right: 10px;
   line-height: normal;
 }
 
-.pokedex-filter-list div {
+.left-side__pokedex-filter-list div {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.pokedex-filter-list div .type-filter, .pokedex-filter-list div .weakness-filter{
-  background-color: white;
+.left-side__pokedex-filter-list div .type-filter, .left-side__pokedex-filter-list div .weakness-filter{
+  background-color: $filter-buttons__color;
   color: black;
   border-radius: 15px;
   width: 28px;
@@ -235,7 +201,7 @@ input {
   line-height: 25px;
 }
 
-.number-range {
+.left-side__number-range {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -275,16 +241,16 @@ input {
   pointer-events: none;
 }
 
-.pokedex-filter-height-list, .pokedex-filter-weight-list {
+.pokedex-filter-height__list, .pokedex-weight-filter__list {
   height: 80px;
   margin-bottom: 10px;
   width: 100%;
   display: flex;
 }
 
-.pokedex-filter-height-list li, .pokedex-filter-weight-list li {
+.pokedex-filter-height__list li, .pokedex-weight-filter__list li {
   width: 100%;
-  background-color: #F2F2F2;
+  background-color: $cards__bg-color;
   border-radius: 12px;
   color: #313131;
   cursor: pointer;
@@ -293,23 +259,23 @@ input {
   overflow: hidden;
 }
 
-.filter-action {
+.left-side__filter-action {
   display: flex;
   flex-direction: row-reverse;
   padding-right: 35px;
 }
 
-.actions {
+.sort__actions {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 
-.sort-div label {
+.actions__sort-div label {
   color: #333;
 }
 
-.result-row {
+.result__row {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -317,28 +283,28 @@ input {
   justify-content: space-between;
 }
 
-.result .result-row .result-item {
+.result .result__row .result__item {
   margin-bottom: 50px;
 }
 
-.result .result-row .result-item a {
-  background-color: #F2F2F2;
+.result .result__row .result__item a {
+  background-color: $cards__bg-color;
   display: block;
   border-radius: 15px;
 }
 
-.result .result-row .result-item p {
+.result .result__row .result__item p {
   color: #919191;
   margin-bottom: 5px;
 }
 
-.result .result-row .result-item h5 {
+.result .result__row .result__item h5 {
   color: black;
   font-size: 23px;
   margin: 5px 0;
 }
 
-.result .result-row .result-item .abilities span {
+.result .result__row .result__item .pokemon__abilities span {
   padding: 2px 25px;
   font-size: 12px;
 }
