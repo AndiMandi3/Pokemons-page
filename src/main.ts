@@ -1,2 +1,2 @@
-import './reset.css'
+import './reset.scss'
 import './style.scss'
