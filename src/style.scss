@@ -1,4 +1,4 @@
-@import "colors";
+@import "colors", "reset";
 
 :root {
   font-family: system-ui, Avenir, "Flexo-Regular", Helvetica, Arial, sans-serif;
@@ -12,11 +12,11 @@
   height: 100%;
 }
 
+// git commit -m "connect scss-addons in 'style.scss' and second refactor"
+
 body {
   background: #424242 url("img/body_bg.png");
-  color: $body__color;
-  min-width: 320px;
-  min-height: 100vh;
+  color: $body--color;
 }
 
 h2 {
@@ -27,7 +27,7 @@ h2 {
 
 .app {
   box-sizing: border-box;
-  background: $body__color;
+  background: $body--color;
   clear: both;
   display: block;
   margin: 0 auto;
@@ -36,18 +36,13 @@ h2 {
   position: relative;
 }
 
-label {
+.search__label--wrap, .sort--div__label-wrap {
   font-size: 25px;
   margin-top: 10px;
 }
 
-ul, li {
-  list-style: none;
-  padding: 0;
-}
-
 .button {
-  background-color: $button__default-color;
+  background-color: $button__default--color;
   border-radius: 5px;
   border: none;
   clear: both;
@@ -62,16 +57,16 @@ ul, li {
   text-transform: none;
 }
 
-.button-gray {
-  background-color: $button__default-color;
+.button--gray {
+  background-color: $button__default--color;
 }
 
-.button-orange {
-  background-color: $search-button__color;
+.button--orange {
+  background-color: $search__button--color;
 }
 
-.button-blue {
-  background-color: $button-action__color;
+.button--blue {
+  background-color: $button__action--color;
 }
 
 .section {
@@ -84,7 +79,7 @@ ul, li {
   margin-top: 20px;
 }
 
-.pokeHeader__section-title {
+.pokeHeader__title {
     font-size: 32px;
     line-height: 1.1;
     margin-bottom: 15px;
@@ -95,15 +90,15 @@ ul, li {
 }
 
 
-.filter-section {
-  background-color: $filter-section__color;
+.filter {
+  background-color: $filter__section--color;
+  *  {
+    border-radius: 5px;
+  }
 }
 
-.filter-section *  {
-  border-radius: 5px;
-}
 
-.filter-header, .filters-wrap {
+.filter__header, .filter__wrap {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -127,18 +122,18 @@ input {
   height: auto;
 }
 
-.search__search-button {
-  background: $search-button__color url("img/input-search-bg.png") center center no-repeat;
+.search__button {
+  background: $search__button--color url("img/input-search-bg.png") center center no-repeat;
   padding: 21px 12px;
   color: transparent;
 }
 
-.right-side__search-banner {
-  background-color: $filter-helps__color;
+.right-side__banner {
+  background-color: $filter__helps--color;
   padding: 20px;
 }
 
-.left-side__filter-title {
+.left-side__title {
   display: inherit;
   flex-direction: row;
   align-items: center;
@@ -154,11 +149,11 @@ input {
   border-radius: 5px;
   text-align: center;
   padding: 13px 31px;
-  background-color: $filter-helps__color;
+  background-color: $filter__helps--color;
 }
 
 
-.left-side__pokedex-filter-list div span {
+.left-side__pokedex-filter-list .pokedex-filter-list__filter-row span {
   cursor: pointer;
   text-align: center;
   margin-right: 10px;
@@ -172,7 +167,7 @@ input {
 }
 
 .left-side__pokedex-filter-list div .type-filter, .left-side__pokedex-filter-list div .weakness-filter{
-  background-color: $filter-buttons__color;
+  background-color: $filter__button--color;
   color: black;
   border-radius: 15px;
   width: 28px;
@@ -229,7 +224,7 @@ input {
 
 .pokedex-filter-height__list li, .pokedex-weight-filter__list li {
   width: 100%;
-  background-color: $cards__bg-color;
+  background-color: $cards__bg--color;
   border-radius: 12px;
   color: #313131;
   cursor: pointer;
@@ -238,7 +233,7 @@ input {
   overflow: hidden;
 }
 
-.left-side__filter-action {
+.filter__actions {
   display: flex;
   flex-direction: row-reverse;
   padding-right: 35px;
@@ -268,7 +263,7 @@ input {
 
 .result .result__row .result__item a {
   font-weight: 500;
-  background-color: $cards__bg-color;
+  background-color: $cards__bg--color;
   display: block;
   border-radius: 15px;
 }

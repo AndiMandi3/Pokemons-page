@@ -7,57 +7,59 @@
     <title>Pokemons Page</title>
   </head>
   <body>
-    <div class="app pokemons">
+    <div class="app">
       <section class="section pokeHeader">
-        <h1 class="pokeHeader__section-title">Pokédex</h1>
+        <h1 class="pokeHeader__title">Pokédex</h1>
       </section>
-      <section class="filter-section">
-        <div class="filter-header">
+      <section class="filter">
+        <div class="filter__header">
           <div class="left-side">
-            <label for="search__search-input">Name or Number</label>
             <div class="search">
-              <input id="search__search-input" type="text" placeholder="Name or Number">
-              <input type="submit" value="Search" class="search__search-button">
+              <div class="search__label--wrap">
+                <label for="search__input">Name or Number</label>
+              </div>
+              <input id="search__input" type="text" placeholder="Name or Number">
+              <input type="submit" value="Search" class="search__button">
             </div>
             <p class="left-side__subtitle">Use the Advanced Search to explore Pokémon by type, weakness, Ability, and more!</p>
           </div>
           <div class="right-side">
-            <p class="right-side__search-banner">Search for a Pokémon by name or using its National Pokédex number.</p>
+            <p class="right-side__banner">Search for a Pokémon by name or using its National Pokédex number.</p>
           </div>
         </div>
-        <div class="filters-wrap">
+        <div class="filter__wrap">
           <div class="left-side">
-            <div class="left-side__filter-title">
+            <div class="left-side__title">
               <h2>Type & Weakness</h2>
-              <div class="left-side__filter-help">
+              <div class="left-side__help">
                 <span><b>T</b> = Type</span>
                 <span><b>W</b> = Weakness</span>
               </div>
             </div>
             <div class="left-side__pokedex-filter-list">
-              <div>
+              <div class="pokedex-filter-list__filter-row">
                 <span class="pill">Bug</span>
                 <span class="filter type-filter toggle">T</span>
                 <span class="filter weakness-filter toggle">W</span>
               </div>
-              <div>
+              <div class="pokedex-filter-list__filter-row">
                 <span class="pill">Bug</span>
                 <span class="filter type-filter toggle">T</span>
                 <span class="filter weakness-filter toggle">W</span>
               </div>
-              <div>
+              <div class="pokedex-filter-list__filter-row">
                 <span class="pill">Bug</span>
                 <span class="filter type-filter toggle">T</span>
                 <span class="filter weakness-filter toggle">W</span>
               </div>
-              <div>
+              <div class="pokedex-filter-list__filter-row">
                 <span class="pill">Bug</span>
                 <span class="filter type-filter toggle">T</span>
                 <span class="filter weakness-filter toggle">W</span>
               </div>
             </div>
             <div class="left-side__number-range">
-              <h3>Number Range</h3>
+              <h3 class="number-range__title">Number Range</h3>
               <div class="number-range__range-boxes">
                 <input type="text" id="minRangeBox" value="1">
                 <span style="padding: 0 10px;">-</span>
@@ -67,7 +69,7 @@
           </div>
           <div class="right-side">
             <div class="abilities-filter">
-              <h2>Ability</h2>
+              <h2 class="abilities-filter__title">Ability</h2>
               <span class="select-custom" id="">
                 <select name="select-custom__ability-selector" id="select-custom__ability-selector">
                   <option value="0" selected>Anger Point</option>
@@ -80,13 +82,13 @@
               <h2>Height</h2>
               <ul class="pokedex-filter-height__list height">
                 <li>
-                  <span class="icon pokedex-height-filter__small-icon"></span>
+                  <span class="icon pokedex-height-filter__icon--small"></span>
                 </li>
                 <li>
-                  <span class="icon pokedex-height-filter__medium-icon"></span>
+                  <span class="icon pokedex-height-filter__icon--medium"></span>
                 </li>
                 <li>
-                  <span class="icon pokedex-height-filter__high-icon"></span>
+                  <span class="icon pokedex-height-filter__icon--large"></span>
                 </li>
               </ul>
             </div>
@@ -94,28 +96,30 @@
               <h2>Weight</h2>
               <ul class="pokedex-weight-filter__list weight">
                 <li>
-                  <span class="icon pokedex-weight-filter__small-icon"></span>
+                  <span class="icon pokedex-weight-filter__icon--small"></span>
                 </li>
                 <li>
-                  <span class="icon pokedex-weight-filter__medium-icon"></span>
+                  <span class="icon pokedex-weight-filter__icon--medium"></span>
                 </li>
                 <li>
-                  <span class="icon pokedex-weight-filter__high-icon"></span>
+                  <span class="icon pokedex-weight-filter__icon--large"></span>
                 </li>
               </ul>
             </div>
-            <div class="left-side__filter-action">
-              <button type="button" class="button button-gray" id="reset"> Reset </button>
-              <button type="button" class="button button-orange" id="advSearch"> Search </button>
+            <div class="filter__actions">
+              <button type="button" class="button button--gray" id="reset"> Reset </button>
+              <button type="button" class="button button--orange" id="advSearch"> Search </button>
             </div>
           </div>
         </div>
       </section>
       <section class="section sort">
         <div class="sort__actions">
-          <button type="button" class="actions__button button button-blue" id="showAdvSearch">Show Advanced Search</button>
-          <div class="actions__sort-div">
-            <label for="sort-selector">Sort By</label>
+          <button type="button" class="actions__button button button--blue" id="showAdvSearch">Show Advanced Search</button>
+          <div class="actions__sort--div">
+            <div class="sort--div__label-wrap">
+              <label for="sort-selector">Sort By</label>
+            </div>
             <span class="select-custom" id="">
                 <select name="sort-selector" id="sort-selector">
                   <option value="0" selected>Anger Point</option>
@@ -310,7 +314,7 @@
           </div>
         </div>
         <div class="full-content">
-          <button type="button" class="full-content__button button button-blue" id="loadMore">Load More <b>Pokemon</b></button>
+          <button type="button" class="full-content__button button button--blue" id="loadMore">Load More <b>Pokemon</b></button>
         </div>
       </section>
     </div>
