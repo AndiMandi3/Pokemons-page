@@ -23,12 +23,11 @@ type TPokemonPreview = {
     url: string
 }
 
+
 async function getAllPokemons(offset: number = 0) {
-    console.log(URL_API + `pokemon?limit=12&offset=${offset}`)
     const json = await fetch(URL_API + `pokemon?limit=12&offset=${offset}`)
     const data = await json.json()
-
-    const listPokemons: Array<any> = data.results
+    const listPokemons: Array<TPokemonPreview> = data.results
         .map(async (element: TPokemon) => {
             const urlPokemon = await fetch(element.url)
             const dataPokemon = await urlPokemon.json()
@@ -51,8 +50,8 @@ async function getAllPokemons(offset: number = 0) {
 async function renderPokemons() {
     const resultDiv: HTMLDivElement | null = document.querySelector('.result__row')
     let pokemons: any = await getAllPokemons(globalOffset)
-    console.log(pokemons)
-    pokemons.map(async (element: any) => {
+    pokemons.map(async (element: TPokemonPreview) => {
+        console.log(element)
         const pokemonData = await element
 
         const item: HTMLDivElement = document.createElement('div')
@@ -88,8 +87,8 @@ async function renderPokemons() {
 
         const divAbilities: HTMLDivElement = document.createElement('div')
         divAbilities.classList.add('pokemon__abilities')
-
-        pokemonData.types.map(async (element: string) => {
+        pokemonData.types.map(async (element: any) => {
+            console.log(element)
             const pokemonAbilitie: HTMLSpanElement = document.createElement('span')
             pokemonAbilitie.classList.add('pill')
             pokemonAbilitie.textContent = element.charAt(0).toUpperCase() + element.slice(1)
