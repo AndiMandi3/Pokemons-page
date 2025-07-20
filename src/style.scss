@@ -1,4 +1,5 @@
-@import "colors", "reset";
+@use "colors" as *;
+@forward "reset";
 
 :root {
   font-family: system-ui, Avenir, "Flexo-Regular", Helvetica, Arial, sans-serif;
@@ -96,10 +97,12 @@ h2 {
 }
 
 
-.filter__header, .filter__wrap {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.filter {
+  &__header, &__wrap {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 
 .left-side, .right-side {
@@ -259,11 +262,15 @@ input {
   margin-bottom: 50px;
 }
 
-.result .result__row .result__item a {
-  font-weight: 500;
-  background-color: $cards__bg--color;
-  display: block;
-  border-radius: 15px;
+.result  {
+  &__link, &__img {
+    font-weight: 500;
+    background-color: $cards__bg--color;
+    display: block;
+    border-radius: 15px;
+    width: 215px;
+    height: 215px;
+  }
 }
 
 .result .result__row .result__item p {
@@ -278,6 +285,7 @@ input {
 }
 
 .result .result__row .result__item .pokemon__abilities span {
+  margin-right: 5px;
   padding: 2px 25px;
   font-size: 12px;
 }
