@@ -284,10 +284,13 @@ input {
   margin: 5px 0;
 }
 
-.result .result__row .result__item .pokemon__abilities span {
-  margin-right: 5px;
-  padding: 2px 25px;
-  font-size: 12px;
+.result .result__row .result__item .pokemon__abilities span{
+    border-radius: 5px;
+    text-align: center;
+    background-color: $neitral--color;
+    margin-right: 5px;
+    padding: 2px 25px;
+    font-size: 12px;
 }
 
 .full-content {

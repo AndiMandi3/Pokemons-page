@@ -1,57 +1,76 @@
 import './style.scss'
+import type {TPokemonType, TPokemonPreview} from './types.ts'
 
 const URL_API:string = "https://pokeapi.co/api/v2/"
+const resultDiv: HTMLDivElement | null = document.querySelector('.result__row')
 
-type TPokemon = {
-    name: string,
-    url: string
-}
+async function getPokemon(pokemonName: string) {
+    try {
+        const urlPokemon = await fetch(`${URL_API}pokemon/${pokemonName}`)
 
-type TPokemonType = {
-    slot: number,
-    type: {
-        name: string,
-        url: string
+        // .then((response) => {
+        //     if(response.status >= 400 || !response.ok) {
+        //         throw new Error ("Not found")
+        //     }
+        //     console.log(response)
+        //     return response
+        // })
+        // .catch(() => {
+        //     return " "
+        // })
+
+        const dataPokemon = await urlPokemon.json()
+
+        if(!dataPokemon || !(typeof dataPokemon === 'object') || !('id' in dataPokemon) || !(typeof dataPokemon.id === 'number')) return null
+
+        const metaData: TPokemonPreview = {
+            id: dataPokemon.id,
+            name: pokemonName,
+            types: [],
+            img: dataPokemon.sprites.front_default
+        }
+        
+        if (dataPokemon.types || Array.isArray(dataPokemon.types) || dataPokemon.types.length > 0) {
+            metaData.types = dataPokemon.types.map((pokemonType: TPokemonType) => {
+
+                if(!pokemonType || !(typeof pokemonType.slot === 'number') || !('slot' in pokemonType) || !(typeof pokemonType.slot === 'number')) return null
+
+                return pokemonType.type.name
+            })
+        } else {
+            return 
+        }
+
+        return metaData
+    }
+    catch(error) {
+        return {}
     }
 }
 
-type TPokemonPreview = {
-    id: number,
-    name: string,
-    types: TPokemonType[],
-    img: string,
-    url: string
-}
-
-
 async function getAllPokemons(offset: number = 0) {
-    const json = await fetch(URL_API + `pokemon?limit=12&offset=${offset}`)
-    const data = await json.json()
-    const listPokemons: Array<TPokemonPreview> = data.results
-        .map(async (element: TPokemon) => {
-            const urlPokemon = await fetch(element.url)
-            const dataPokemon = await urlPokemon.json()
-
-            const metaData: TPokemonPreview = {
-                id: dataPokemon.id,
-                name: element.name,
-                types: dataPokemon.types.map((pokemonType: TPokemonType) => {
-                    return pokemonType.type.name
-                }),
-                img: dataPokemon.sprites.front_default,
-                url: element.url
-            }
-            return metaData
-        })
-    return listPokemons
+    try {
+        const json = await fetch(URL_API + `pokemon?limit=12&offset=${offset}`)
+        const data = await json.json()
+        const listPokemons: TPokemonPreview[] = data.results
+            .map(async (element: unknown) => {
+                if(!element || !(typeof element === 'object') || !('name' in element) || !(typeof element.name === 'string')) return null
+                
+                return await getPokemon(element.name)
+            })
+            .filter(Boolean)
+        return listPokemons
+    }
+    catch(e) {
+        return []
+    }
 }
 
 
 async function renderPokemons() {
-    const resultDiv: HTMLDivElement | null = document.querySelector('.result__row')
+    
     let pokemons: any = await getAllPokemons(globalOffset)
     pokemons.map(async (element: TPokemonPreview) => {
-        console.log(element)
         const pokemonData = await element
 
         const item: HTMLDivElement = document.createElement('div')
@@ -59,7 +78,7 @@ async function renderPokemons() {
 
         const linkPokemon: HTMLAnchorElement = document.createElement('a')
         linkPokemon.classList.add('result__link')
-        linkPokemon.href = pokemonData.url
+        linkPokemon.href = "#"
 
         const imgPokemon: HTMLImageElement = document.createElement('img')
         imgPokemon.classList.add('result__img')
@@ -87,13 +106,19 @@ async function renderPokemons() {
 
         const divAbilities: HTMLDivElement = document.createElement('div')
         divAbilities.classList.add('pokemon__abilities')
-        pokemonData.types.map(async (element: any) => {
-            console.log(element)
-            const pokemonAbilitie: HTMLSpanElement = document.createElement('span')
-            pokemonAbilitie.classList.add('pill')
-            pokemonAbilitie.textContent = element.charAt(0).toUpperCase() + element.slice(1)
-            divAbilities.appendChild(pokemonAbilitie)
-        })
+
+        if(pokemonData.types.length > 0) {
+            pokemonData.types.map(async (element: string, index: number) => {
+                const pokemonAbilitie: HTMLSpanElement = document.createElement('span')
+                pokemonAbilitie.classList.add(`pokemon__abilitie--${index}`)
+                pokemonAbilitie.textContent = element.charAt(0).toUpperCase() + element.slice(1)
+                divAbilities.appendChild(pokemonAbilitie)
+            })
+        }
+        else {
+            return
+        }
+        
         pokemonPreview.appendChild(divAbilities)
         item.appendChild(pokemonPreview)
         resultDiv?.appendChild(item)
@@ -103,7 +128,7 @@ async function renderPokemons() {
 const loadMoreButton = document.querySelector('#loadMore')
 let globalOffset: number = 0
 if (loadMoreButton) {
-    document.addEventListener('click', async() => {
+    loadMoreButton.addEventListener('click', async() => {
         globalOffset += 12
         await getAllPokemons(globalOffset)
         await renderPokemons()
