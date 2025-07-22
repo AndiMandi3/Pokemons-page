@@ -1,37 +1,23 @@
 import './style.scss'
-import type {TPokemonType, TPokemonPreview} from './types.ts'
+import type {TPokemonPreview} from './types.ts'
 
 const URL_API:string = "https://pokeapi.co/api/v2/"
 
-async function getPokemon(pokemonName: string) {
+async function getPokemon(pokemonName: string): Promise<TPokemonPreview | null> {
     try {
         const urlPokemon = await fetch(`${URL_API}pokemon/${pokemonName}`)
-
         const dataPokemon = await urlPokemon.json()
 
         if(!dataPokemon || !(typeof dataPokemon === 'object') || !('id' in dataPokemon) || !(typeof dataPokemon.id === 'number')) return null;
 
-        const metaData: TPokemonPreview = {
+        console.log(dataPokemon?.types?.map((pokemon: unknown) => pokemon?.type.name || null) || [])
+        return {
             id: dataPokemon.id,
             name: pokemonName,
-            types: [],
-            img: dataPokemon.sprites.front_default
-        }
-        
-        if (dataPokemon.types || Array.isArray(dataPokemon.types) || dataPokemon.types.length > 0) {
-            metaData.types = dataPokemon.types.map((pokemonType: TPokemonType) => {
-
-                if(!pokemonType || !(typeof pokemonType.slot === 'number') || !('slot' in pokemonType) || !(typeof pokemonType.slot === 'number')) return null;
-
-                return pokemonType.type.name;
-            });
-        } else {
-            return;
-        }
-
-        return metaData;
-    }
-    catch(error) {
+            types: dataPokemon?.types?.map((pokemon: unknown) => pokemon?.type?.name || null) || [],
+            img: dataPokemon?.sprites?.front_default || '/img/001.png'
+        };
+    } catch(error) {
         return null;
     }
 }
@@ -83,6 +69,7 @@ async function renderPokemons(sortParameter: string = "ascId") {
         for await (const element of pokemons as TPokemonPreview[]) { //tg or type as here?
 
             const pokemonData = element
+            console.log(pokemonData)
             
             const item: HTMLDivElement = document.createElement('div')
             item.classList.add('result__item')
@@ -181,4 +168,4 @@ if (loadMoreButton) {
 }
 
 
-renderPokemons()
+await renderPokemons()

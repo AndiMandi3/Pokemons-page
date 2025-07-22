@@ -3,13 +3,13 @@
 //     url: string
 // }
 
-type TPokemonType = {
-    slot: number,
-    type: {
-        name: string,
-        url: string
-    }
-}
+// TPokemonType = {
+//      slot: number,
+//      type: {
+//          name: string,
+//          url: string
+//      }
+// }
 
 type TPokemonPreview = {
     id: number,
@@ -18,4 +18,4 @@ type TPokemonPreview = {
     img: string,
 }
 
-export type {TPokemonType, TPokemonPreview}
+export type {TPokemonPreview}
