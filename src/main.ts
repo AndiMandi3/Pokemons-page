@@ -9,12 +9,16 @@ async function getPokemon(pokemonName: string): Promise<TPokemonPreview | null> 
         const dataPokemon = await urlPokemon.json()
 
         if(!dataPokemon || !(typeof dataPokemon === 'object') || !('id' in dataPokemon) || !(typeof dataPokemon.id === 'number')) return null;
-
-        console.log(dataPokemon?.types?.map((pokemon: unknown) => pokemon?.type.name || null) || [])
+    
         return {
             id: dataPokemon.id,
             name: pokemonName,
-            types: dataPokemon?.types?.map((pokemon: unknown) => pokemon?.type?.name || null) || [],
+            types: dataPokemon?.types?.map((pokemon: unknown) => {
+                if(!pokemon || !(typeof pokemon === 'object') || !("type" in pokemon) || !pokemon.type || !(typeof pokemon.type === "object") || !("name" in pokemon.type)) return null
+
+                return pokemon?.type?.name
+
+            }) || [],
             img: dataPokemon?.sprites?.front_default || '/img/001.png'
         };
     } catch(error) {
@@ -22,54 +26,36 @@ async function getPokemon(pokemonName: string): Promise<TPokemonPreview | null> 
     }
 }
 
-async function getAllPokemons(limit: number = 12) {
+async function getAllPokemons(limit: number = 12): Promise<TPokemonPreview[]> {
     try {
         const json = await fetch(URL_API + `pokemon?limit=${limit}&offset=0`);
-        
         const data = await json.json()
 
-        const listPokemons: TPokemonPreview[] = data.results
-            .map(async (element: unknown) => {
-                if(!element || !(typeof element === 'object') || !('name' in element) || !(typeof element.name === 'string')) return null
-                
-                return await getPokemon(element.name)
-            })
-            .filter(Boolean)
-        return listPokemons
-    }
-    catch(e) {
+        const allPokemons: TPokemonPreview[]= []
+        
+        for (const element of data.results) {
+            if(!element || !(typeof element === 'object') || !('name' in element) || !(typeof element.name === 'string')) continue
+
+            const pokemonData = await getPokemon(element.name)
+
+            if (pokemonData) allPokemons.push(pokemonData)
+        }
+        return allPokemons
+            
+    } catch {
         return []
     }
 }
 
 
-async function renderPokemons(sortParameter: string = "ascId") {
+async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
     const resultDiv: HTMLDivElement | null = document.querySelector('.result__row')
-    let pokemons: TPokemonPreview[] = await getAllPokemons(globalLimit)
-    console.log(pokemons)
-    if(pokemons.length > 0) {
-        if(sortParameter === "ascId") {
-            pokemons.sort()
-        }
-        if(sortParameter === "descId") {
-            pokemons.reverse()
-        }
-        if(sortParameter === "ascName") {
-            const results = await Promise.all(pokemons)
-            results.sort((a, b) => a.name.localeCompare(b.name))
-            console.log(results)
-            pokemons = results;
-        }
-        if(sortParameter === "descName") {
-            const results = await Promise.all(pokemons)
-            results.sort((a, b) => b.name.localeCompare(a.name))
-            console.log(results)
-            pokemons = results;
-        }
-        for await (const element of pokemons as TPokemonPreview[]) { //tg or type as here?
+
+    if(recievedPokemons.length > 0) {
+
+        for (const element of recievedPokemons) {
 
             const pokemonData = element
-            console.log(pokemonData)
             
             const item: HTMLDivElement = document.createElement('div')
             item.classList.add('result__item')
@@ -94,9 +80,9 @@ async function renderPokemons(sortParameter: string = "ascId") {
             const idPrefix: HTMLSpanElement = document.createElement('span')
             idPrefix.classList.add('number-prefix')
             idPrefix.textContent = "# "
-
             pokemonId.prepend(idPrefix)
             pokemonPreview.appendChild(pokemonId)
+
             const pokemonName: HTMLHeadingElement = document.createElement('h5')
             pokemonName.textContent = pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1)
             pokemonPreview.appendChild(pokemonName)
@@ -112,16 +98,14 @@ async function renderPokemons(sortParameter: string = "ascId") {
                     divAbilities.appendChild(pokemonAbilitie)
                 })
             }
-            else {
-                return
-            }
             
             pokemonPreview.appendChild(divAbilities)
             item.appendChild(pokemonPreview)
             resultDiv?.appendChild(item)
-        }
+        }           
     }
     else {
+        resultDiv!.style.color = "black"
         resultDiv!.innerHTML = "No pokemons found"
     }
 }
@@ -134,26 +118,40 @@ function clearResults() {
     resultDiv!.innerHTML = ''
 }
 
+
 const sortResultSelector: HTMLSelectElement | null = document.querySelector("#sort-selector")
-if(sortResultSelector) {
-    sortResultSelector.addEventListener('change', async() => {
-        if (sortResultSelector.value === "ascId")  {
-            clearResults()
-            await renderPokemons()
-        }
-        if (sortResultSelector.value === "descId")  {
-            clearResults()
-            await renderPokemons(sortResultSelector.value)
-        }
-        if (sortResultSelector.value === "ascName") {
-            clearResults()
-            await renderPokemons(sortResultSelector.value)
-        }
-        if (sortResultSelector.value === "descName") {
-            clearResults()
-            await renderPokemons(sortResultSelector.value)
-        }
-    })
+
+function sortResult(pokemonsArray: TPokemonPreview[]): TPokemonPreview[] {
+    if(sortResultSelector) { 
+
+        sortResultSelector.addEventListener('change', async() => {
+
+            if(pokemonsArray.length > 0) {
+
+                if(sortResultSelector.value === "ascId") {
+                    clearResults()
+                    await renderPokemons(pokemonsArray.sort((a, b) => a.id - b.id ))
+                }
+
+                else if(sortResultSelector.value === "descId") {
+                    clearResults()
+                    await renderPokemons(pokemonsArray.sort((a, b) => b.id - a.id ))
+                }
+
+                else if(sortResultSelector.value === "ascName") {
+                    clearResults()
+                    await renderPokemons(pokemonsArray.sort((a, b) => a.name.localeCompare(b.name)))
+                        
+                }
+
+                else if(sortResultSelector.value === "descName") {
+                    clearResults()
+                    await renderPokemons(pokemonsArray.sort((a, b) => b.name.localeCompare(a.name)))
+                }
+            }
+        })
+    }
+    return pokemonsArray
 }
 
 const loadMoreButton: HTMLButtonElement | null = document.querySelector('#loadMore')
@@ -163,9 +161,13 @@ if (loadMoreButton) {
     loadMoreButton.addEventListener('click', async() => {
         globalLimit += 12
         clearResults()
-        await renderPokemons(sortResultSelector!.value)
+
+        const pokemons = await getAllPokemons(globalLimit)
+        const sortedPokemons = sortResult(pokemons)
+        await renderPokemons(sortedPokemons)
     })
 }
 
-
-await renderPokemons()
+const pokemons = await getAllPokemons()
+let sortedPokemons = sortResult(pokemons)
+await renderPokemons(sortedPokemons)
