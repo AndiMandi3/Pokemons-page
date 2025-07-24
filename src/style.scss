@@ -91,6 +91,7 @@ h2 {
 
 .filter {
   background-color: $filter__section--color;
+  padding: 0 0 30px 0;
   *  {
     border-radius: 5px;
   }
@@ -102,6 +103,10 @@ h2 {
     display: flex;
     justify-content: space-around;
     align-items: center;
+  }
+  &__wrap {
+    overflow: hidden;
+    transition: 0.5s;
   }
 }
 

@@ -49,7 +49,7 @@ async function getAllPokemons(limit: number = 12): Promise<TPokemonPreview[]> {
 
 
 async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
-    const resultDiv: HTMLDivElement | null = document.querySelector('.result__row')
+    const resultDiv = document.querySelector<HTMLDivElement>('.result__row')
 
     if(recievedPokemons.length > 0) {
 
@@ -165,6 +165,24 @@ if (loadMoreButton) {
         const pokemons = await getAllPokemons(globalLimit)
         const sortedPokemons = sortResult(pokemons)
         await renderPokemons(sortedPokemons)
+    })
+}
+
+const showFiltersButton = document.querySelector<HTMLButtonElement>("#showAdvSearch")
+
+if(showFiltersButton) {
+    const filterWrap = document.querySelector<HTMLDivElement>(".filter__wrap")
+    showFiltersButton.addEventListener('click', () => {
+
+        if(filterWrap!.style.height === '0px') {
+            showFiltersButton.textContent = "Hide Advanced Search"
+            filterWrap!.style.height = 'inherit'
+        }
+
+        else if(filterWrap!.style.height === 'inherit') {
+            showFiltersButton.textContent = "Show Advanced Search"
+            filterWrap!.style.height = '0px'
+        }
     })
 }
 
