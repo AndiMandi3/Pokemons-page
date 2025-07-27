@@ -14,7 +14,7 @@
 }
 
 body {
-  background: #424242 url("img/body_bg.png");
+  background: #424242 url("../img/body_bg.png");
   color: $body--color;
 }
 
@@ -129,7 +129,7 @@ input {
 }
 
 .search__button {
-  background: $search__button--color url("img/input-search-bg.png") center center no-repeat;
+  background: $search__button--color url("../img/input-search-bg.png") center center no-repeat;
   padding: 21px 12px;
   color: transparent;
 }
