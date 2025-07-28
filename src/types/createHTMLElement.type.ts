@@ -1,0 +1,3 @@
+type TAnchorElement = {
+    href: string
+}
