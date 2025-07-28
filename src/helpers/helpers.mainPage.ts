@@ -7,6 +7,14 @@ const sortResultSelector: HTMLSelectElement | null = document.querySelector("#so
 const loadMoreButton: HTMLButtonElement | null = document.querySelector('#loadMore')
 const showFiltersButton = document.querySelector<HTMLButtonElement>("#showAdvSearch")
 
+
+// function createHTMLElement<T>(T: string, classes: string[] = []): T {
+//     const el = document.createElement(T)
+//     return el
+// }
+
+
+
 function clearResults() {
     const resultDiv: HTMLDivElement | null = document.querySelector('.result__row')
     if (resultDiv && resultDiv.innerHTML) {

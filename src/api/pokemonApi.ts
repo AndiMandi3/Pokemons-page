@@ -4,7 +4,7 @@ const URL_API:string = import.meta.env.VITE_URL_API
 
 async function getPokemon(pokemonName: string): Promise<TPokemonPreview | null> {
     try {
-        const urlPokemon = await fetch(`${URL_API}pokemon/${pokemonName}`)
+        const urlPokemon = await fetch(`${URL_API}/pokemon/${pokemonName}`)
         const dataPokemon = await urlPokemon.json()
 
         if(!dataPokemon || !(typeof dataPokemon === 'object') || !('id' in dataPokemon) || !(typeof dataPokemon.id === 'number')) return null;
@@ -27,7 +27,7 @@ async function getPokemon(pokemonName: string): Promise<TPokemonPreview | null> 
 
 async function getAllPokemons(limit: number = 12): Promise<TPokemonPreview[]> {
     try {
-        const json = await fetch(URL_API + `pokemon?limit=${limit}&offset=0`);
+        const json = await fetch(URL_API + `/pokemon?limit=${limit}&offset=0`);
         const data = await json.json()
 
         const allPokemons: TPokemonPreview[]= []
