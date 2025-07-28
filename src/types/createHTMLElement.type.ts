@@ -1,3 +1,0 @@
-type TAnchorElement = {
-    href: string
-}

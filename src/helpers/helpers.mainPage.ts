@@ -8,12 +8,24 @@ const loadMoreButton: HTMLButtonElement | null = document.querySelector('#loadMo
 const showFiltersButton = document.querySelector<HTMLButtonElement>("#showAdvSearch")
 
 
-// function createHTMLElement<T>(T: string, classes: string[] = []): T {
-//     const el = document.createElement(T)
-//     return el
-// }
+function createHTMLElement<T extends keyof HTMLElementTagNameMap>(T: string, classes: string[] = [], options?: Partial<HTMLElementTagNameMap[T]> & Record<string, unknown>): HTMLElement{
+    const el = document.createElement(T)
 
+    if (classes.length) {
+        el.classList.add(...classes)
+    }
 
+    if(options) {
+        Object.entries(options).forEach(([key, value]) => {
+            if(key in  el) {
+                (el as any)[key] = value
+            } else {
+                el.setAttribute(key, String(value))
+            }
+        })
+    }
+    return el
+}
 
 function clearResults() {
     const resultDiv: HTMLDivElement | null = document.querySelector('.result__row')
@@ -73,4 +85,4 @@ if(showFiltersButton) {
     })
 }
 
-export {sortResult, globalLimit}
+export {sortResult, globalLimit, createHTMLElement}
