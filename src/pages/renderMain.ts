@@ -26,7 +26,7 @@ async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
             pokemonId.prepend(idPrefix)
             pokemonPreview.appendChild(pokemonId)
 
-            const pokemonName: HTMLElement = createHTMLElement('h5', [], {textContent: element.name.charAt(0).toUpperCase() + element.name.slice(1)})
+            const pokemonName: HTMLElement = createHTMLElement('h5', [], {textContent: element.name.charAt(0).toUpperCase() + element.name.slice(1), 'data-id': "123"})
             pokemonPreview.appendChild(pokemonName)
             
             const divAbilities: HTMLElement = createHTMLElement('div', ['pokemon__abilities'])

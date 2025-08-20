@@ -8,20 +8,16 @@ const loadMoreButton: HTMLButtonElement | null = document.querySelector('#loadMo
 const showFiltersButton = document.querySelector<HTMLButtonElement>("#showAdvSearch")
 
 
-function createHTMLElement<T extends keyof HTMLElementTagNameMap>(T: string, classes: string[] = [], options?: Partial<HTMLElementTagNameMap[T]> & Record<string, unknown>): HTMLElement{
+function createHTMLElement<T extends keyof HTMLElementTagNameMap>(T: string, classes: string[] = [], options?: Partial<HTMLElementTagNameMap[T]> & Record<string, string> ): HTMLElement{
     const el = document.createElement(T)
+    
+    el.classList.add(...classes)
 
-    if (classes.length) {
-        el.classList.add(...classes)
-    }
 
     if(options) {
         Object.entries(options).forEach(([key, value]) => {
-            if(key in  el) {
-                (el as any)[key] = value
-            } else {
-                el.setAttribute(key, String(value))
-            }
+        if(value in el)
+            (el as any)[key] = value.toString()
         })
     }
     return el

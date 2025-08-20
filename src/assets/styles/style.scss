@@ -24,6 +24,10 @@ h2 {
   margin: 20px 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 .app {
   box-sizing: border-box;
   background: $body--color;
@@ -66,6 +70,14 @@ h2 {
 
 .button--blue {
   background-color: $button__action--color;
+}
+
+.icon {
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: $icon__background-color;
 }
 
 .section {
@@ -302,3 +314,135 @@ input {
   display: flex;
   justify-content: center;
 }
+
+.pokemon-pagination {
+
+  &__buttons {
+    display: flex;
+    height: 60px;
+  }
+
+  a {
+    display: inherit;
+    justify-content: center;
+    background-color: $pokemon-pagination__background-color;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    &:hover {
+      background-color: $pokemon-pagination__background-color_hovered;
+    }
+  }
+
+  span {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &__wrapper {
+    display: inherit;
+    align-items: center;
+    height: 100%;
+    gap: 15px;
+  }
+
+  &__previous {
+    border-right: 4px solid white;
+  }
+
+  .icon-arrow {
+    &-left::before {
+      content: "<";
+      color: $arrow__color;
+    }
+
+    &-right::before {
+      content: ">";
+      color: $arrow__color;
+    }
+  }
+
+  &__number {
+    color: white;
+  }
+  &__name {
+    color: $pokemon-name__color
+  }
+
+  &__title {
+    text-align: center;
+    color: black;
+    margin-top: 20px;
+    font-size: 36px;
+    span {
+      color: $pokemon-id__color
+    }
+  }
+}
+
+.pokemon-detail {
+  display: flex;
+  padding: 0 10px;
+  margin-top: 50px;
+  justify-content: space-between;
+
+  &__left-side, &__right-side {
+    width: 48%;
+  }
+
+  &__pokemon-image {
+    text-align: center;
+    background-color: $cards__bg--color;
+    border-radius: 20px;
+    img {
+      width: 90%;
+    }
+  }
+
+  &__pokemon-stats {
+    background-color: $pokemon-specifications__background-color;
+    padding: 24px;
+    margin-top: 20px;
+    border-radius: 10px;
+
+    h3 {
+      font-size: 16px;
+      color: black;
+      font-weight: lighter;
+    }
+  }
+
+  &__columns-specifications {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .column {
+    display: inherit;
+    flex-direction: column;
+    width: 55px;
+    
+    .cell {
+      background-color: white;
+      margin-top: 5px;
+      height: 10px;
+      &.active {
+        background-color: $pokemon-specifications__cell-active;
+      }
+    }
+
+    span {
+      margin-top: 5px;
+      text-align: center;
+      color: black;
+    }
+  }
+  &__description {
+    margin-top: 10px;
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+}
+
