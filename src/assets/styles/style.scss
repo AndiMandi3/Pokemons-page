@@ -1,5 +1,6 @@
 @use "colors" as *;
 @forward "reset";
+@forward "fonts";
 
 :root {
   font-family: system-ui, Avenir, "Flexo-Regular", Helvetica, Arial, sans-serif;
@@ -444,5 +445,101 @@ input {
     font-weight: 500;
   }
 
+  &__pokemon-versions {
+    display: flex;
+    margin-top: 30px;
+    gap: 10px;
+    align-items: center;
+    span {
+      color: black;
+      font-size: 18px;
+    }
+  }
+
+  &__version {
+    cursor: pointer;
+    &.version-blue, &.version-red {
+      border-width: 4px; 
+      border-radius: 30px;
+      border-style: solid;
+      width: 38px;
+      line-height: normal;
+      span {
+        font-size: 30px;
+        font-family: "icons";
+
+        &::before {
+          content: "\f12a";
+        }
+
+      }
+    }
+
+    &.version-blue span{
+      color: $pokemon-specifications__border-color_blue-pokeball;
+    }
+
+    &.version-red span{
+      color: $pokemon-specifications__border-color_red-pokeball;
+    }
+
+    &.version-blue.active {
+      border-color: $pokemon-specifications__border-color_blue-pokeball
+    }
+
+    &.version-red.active {
+      border-color: $pokemon-specifications__border-color_red-pokeball
+    }
+  }
+
+  &__ability-info {
+    padding: 0 20px;
+    border-radius: 10px;
+    background-color: $pokemon-specifications__cell-active;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-count: 2;
+    margin-top: 30px;
+    padding-bottom: 15px;
+    div {
+      width: 50%;
+      p.attribute-title {
+        margin-top: 15px;
+      }
+
+      p.attribute-value {
+        color: black;
+        font-size: 20px;
+        margin-top: 15px;
+
+        &.more-info {
+          font-family: "icons";
+          cursor: pointer;
+          &::after {
+            content: "?";
+            margin-left: 10px;
+            background-color: white;
+            padding: 3px 10px;
+            border-radius: 50%;
+            color: $pokemon-specifications__cell-active;
+          }
+        }
+
+        span.icon {
+          font-family: "icons";
+          background-color: transparent;
+
+          &.icon-female::before {
+            content: "\f115";
+          }
+
+          &.icon-male::before {
+            content: "\f122";
+          }
+        }
+      }
+    }
+  }
 }
 

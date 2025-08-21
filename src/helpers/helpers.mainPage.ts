@@ -16,8 +16,11 @@ function createHTMLElement<T extends keyof HTMLElementTagNameMap>(T: string, cla
 
     if(options) {
         Object.entries(options).forEach(([key, value]) => {
-        if(value in el)
-            (el as any)[key] = value.toString()
+            if(key in  el) {
+                (el as any)[key] = value
+            } else {
+                el.setAttribute(key, String(value))
+            }
         })
     }
     return el
