@@ -191,9 +191,87 @@
                   </p>
                 </div>
               </div>
+              <div class="pokemon-detail__ability-desc" style="display: none;">
+                <div class="pokemon-detail__ability-desc__header">
+                  <h3>Ability info</h3>
+                  <div class="close-button">
+                    <button type="button">Close</button>
+                  </div>
+                </div>
+                <div class="pokemon-detail__ability-desc__body">
+                  <h3 class="ability-title">Overgrow</h3>
+                  <p class="ability-text">Powers up Grass-type moves when the Pokémon’s HP is low.</p>
+                </div>
+              </div>
+            </div>
+            <div class="pokemon-detail__attributes">
+              <div class="pokemon-detail__pokemon-types">
+                <h3>Type</h3>
+                <div class="pokemon__abilities">
+                  <span class="pokemon__abilitie--0">Grass</span>
+                  <span class="pokemon__abilitie--1">Poison</span>
+                </div>
+              </div>
+              <div class="pokemon-detail__pokemon-weaknesses">
+                <h3>Weakness</h3>
+                <div class="pokemon__abilities">
+                  <span class="pokemon__abilitie--0">Fire</span>
+                  <span class="pokemon__abilitie--1">Ice</span>
+                  <span class="pokemon__abilitie--2">Flying</span>
+                  <span class="pokemon__abilitie--3">Phychic</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
+      <section class="pokemon-evolution">
+        <div class="pokemon-evolution__wrapper">
+          <div class="pokemon-evolution__header">
+            <h3>Evolutions</h3>
+          </div>
+          <div class="pokemon-evolution__body">
+            <a href="#" target="_blank" class="pokemon-evolution__pokemon-card">
+              <div class="pokemon-evolution__img">
+                <img src="./src/assets/img/001.png" alt="Bulbasaur">
+              </div>
+              <div class="pokemon-evolution__pokemon-info">
+                <h3 class="pokemon-evolution__pokemon-name">Bulbazaur <span class="number-postfix">#0001</span></h3>
+                <div class="pokemon__abilities">
+                  <span class="pokemon__abilitie--0">Grass</span>
+                  <span class="pokemon__abilitie--1">Poison</span>
+                </div>
+              </div>
+            </a>
+            <a href="#" target="_blank" class="pokemon-evolution__pokemon-card">
+              <div class="pokemon-evolution__img">
+                <img src="./src/assets/img/002.png" alt="Ivysaur">
+              </div>
+              <div class="pokemon-evolution__pokemon-info">
+                <h3 class="pokemon-evolution__pokemon-name"> Ivysaur <span class="number-postfix">#0002</span></h3>
+                <div class="pokemon__abilities">
+                  <span class="pokemon__abilitie--0">Grass</span>
+                  <span class="pokemon__abilitie--1">Poison</span>
+                </div>
+              </div>
+            </a>
+            <a href="#" target="_blank" class="pokemon-evolution__pokemon-card">
+              <div class="pokemon-evolution__img">
+                <img src="./src/assets/img/003.png" alt="Venusaur">
+              </div>
+              <div class="pokemon-evolution__pokemon-info">
+                <h3 class="pokemon-evolution__pokemon-name"> Venusaur <span class="number-postfix">#0003</span></h3>
+                <div class="pokemon__abilities">
+                  <span class="pokemon__abilitie--0">Grass</span>
+                  <span class="pokemon__abilitie--1">Poison</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+      <div class="explore-more full-content">
+        <a href="#" class="full-content__button button button--orange">Explore More <b>Pokemon</b></a>
+      </div>
     </div>
     <script type="module" src="/src/pages/renderPokemonPage.ts"></script>
   </body>
