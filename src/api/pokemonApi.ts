@@ -1,4 +1,6 @@
 import type {TPokemonPreview} from "../types/pokemonPreview.type.ts";
+import type { TPokemonIdentification } from "../types/pokemonIdentification.type.ts";
+import type { TPokemonPageData } from "../types/pokemonPageData.type.ts";
 
 const URL_API:string = import.meta.env.VITE_URL_API
 
@@ -46,4 +48,45 @@ async function getAllPokemons(limit: number = 12): Promise<TPokemonPreview[]> {
     }
 }
 
-export {URL_API, getPokemon, getAllPokemons};
+async function getDescriptionPokemonForm(id: number = 1) {
+    const json = await fetch (URL_API + `/pokemon-species/${id}`)
+    const data = await json.json()
+
+    console.log(data)
+}
+
+async function getPokemonPageData(id:number = 1): Promise<TPokemonPageData | null>  {
+    const json = await fetch(URL_API + `/pokemon/${id}`)
+    const pokemonData = await json.json()
+
+    console.log(pokemonData)
+
+    if(!pokemonData || !(typeof pokemonData === 'object') || !('id' in pokemonData) || !(typeof pokemonData.id === 'number')) return null
+    
+    return {
+        name: pokemonData?.name,
+        description: await getDescriptionPokemonForm(id),
+
+
+    }
+}
+
+async function pokemonsForPagination(): Promise<TPokemonIdentification | null> {
+    try {
+        const json = await fetch(URL_API + "/pokemon?limit=10000")
+        const data = await json.json()
+
+        const pokemonList:TPokemonIdentification[] = data.results
+
+        if(pokemonList.length < 2) {
+            return null
+        }
+
+        return pokemonList[1]
+    }
+    catch(error) {
+        return null
+    }
+}
+
+export {URL_API, getPokemon, getAllPokemons, pokemonsForPagination, getPokemonPageData};
