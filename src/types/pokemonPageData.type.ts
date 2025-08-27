@@ -3,12 +3,12 @@ export type TPokemonPageData = {
     description: string,
     img: string,
     id: number,
-    height: number,
-    weight: number,
+    height: string,
+    weight: number | string,
     gender: string[],
     category: string,
     types: string[],
-    weaknesses: string,
+    weaknesses: string[],
     stats: [{
         name_stat: string,
         value_stat: number
