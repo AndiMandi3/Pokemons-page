@@ -6,47 +6,6 @@ import { convertHeightToInches, convertWeightToLbs } from "../helpers/helpers.po
 
 const URL_API:string = import.meta.env.VITE_URL_API
 
-async function getTypesOfPokemon(name: string): Promise<string[]> {
-    try {
-        const urlPokemon = await fetch(`${URL_API}/pokemon/${name}`)
-        const dataPokemon = await urlPokemon.json()
-
-        return dataPokemon?.types?.map((pokemon: unknown) => {
-            if(!pokemon || !(typeof pokemon === 'object') || !("type" in pokemon) || !pokemon.type || !(typeof pokemon.type === "object") || !("name" in pokemon.type)) return []
-
-            return pokemon?.type?.name
-
-        }) || []
-    }
-    catch(e) {
-        return []
-    }
-    
-}
-
-async function getWeaknessesOfPokemon(types: string[]): Promise<string[]> {
-    try {
-        const allWeaknesses: string[] = []
-
-        for (const type of types) {
-            const urlType = await fetch(`${URL_API}/type/${type}`)
-            const dataType = await urlType.json()
-
-            for (const weakness of dataType?.damage_relations?.double_damage_from){
-                if(!weakness || !(typeof weakness === 'object') ||  !("name" in weakness)) return []
-
-                allWeaknesses.push(weakness?.name)
-            }
-            
-        }
-        return allWeaknesses
-    }
-    catch(e) {
-        return ['']
-    }
-    
-}
-
 async function getPokemon(pokemonName: string): Promise<TPokemonPreview | null> {
     try {
         const urlPokemon = await fetch(`${URL_API}/pokemon/${pokemonName}`)
@@ -104,29 +63,34 @@ async function getDescriptionPokemonForm(id: number = 1): Promise<string> {
                 description = element.flavor_text
                 break
             }
+
         }
         return description
-    }
-    catch {
+    } catch {
         return 'No data'
     }
     
 }
 
 async function getAllGendersPokemon(): Promise<string[]> {
-    const urlGenders = await fetch(`${URL_API}/gender/`)
-    const genderList = await urlGenders.json()
+    try {
+        const urlGenders = await fetch(`${URL_API}/gender/`)
+        const genderList = await urlGenders.json()
 
-    const allGenders:string[] = []
+        const allGenders:string[] = []
 
-    for(const gender of genderList.results) {
-        if(!gender || !(typeof gender === 'object') || !('name' in gender) || !(typeof gender.name === 'string')) continue
+        for(const gender of genderList.results) {
+            if(!gender || !(typeof gender === 'object') || !('name' in gender) || !(typeof gender.name === 'string')) continue
 
-        allGenders.push(gender.name)
+            allGenders.push(gender.name)
 
+        }
+
+        return allGenders
+    } catch {
+        return []
     }
-
-    return allGenders
+    
 }
 
 async function getGendersForPokemon(name: string, genders: string[]): Promise<string[]> {
@@ -147,39 +111,127 @@ async function getGendersForPokemon(name: string, genders: string[]): Promise<st
         })
         return arrayGenders
         
-    } catch (error) {
+    } catch {
+        return []
+    }
+}
+
+async function getTypesOfPokemon(name: string): Promise<string[]> {
+    try {
+        const urlPokemon = await fetch(`${URL_API}/pokemon/${name}`)
+        const dataPokemon = await urlPokemon.json()
+
+        return dataPokemon?.types?.map((pokemon: unknown) => {
+            if(!pokemon || !(typeof pokemon === 'object') || !("type" in pokemon) || !pokemon.type || !(typeof pokemon.type === "object") || !("name" in pokemon.type)) return []
+
+            return pokemon?.type?.name
+
+        }) || []
+    } catch {
         return []
     }
     
+}
 
+async function getWeaknessesOfPokemon(types: string[]): Promise<string[]> {
+    try {
+        const allWeaknesses: string[] = []
+
+        for (const type of types) {
+            const urlType = await fetch(`${URL_API}/type/${type}`)
+            const dataType = await urlType.json()
+
+            for (const weakness of dataType?.damage_relations?.double_damage_from){
+                if(!weakness || !(typeof weakness === 'object') ||  !("name" in weakness)) return []
+
+                allWeaknesses.push(weakness?.name)
+            }
+            
+        }
+        return allWeaknesses
+    } catch {
+        return []
+    }
+    
+}
+
+
+
+async function getDescriptionPokemonAbilitie(url:string): Promise<string> {
+    try {
+        const jsonDescription = await fetch(url)
+        const abilityDescriptions = await jsonDescription.json()
+
+        const arrayDescriptions = abilityDescriptions.flavor_text_entries || null
+
+        let descriptionAbility
+
+        for (const description of arrayDescriptions) {
+            if(!description || !('flavor_text' in description) || !(typeof description.flavor_text === 'string') || !('version_group' in description) || !(typeof description.version_group === 'object') || !description.version_group || !('name' in description.version_group) || !(typeof description.version_group.name === 'string') || !('language' in description) || !(typeof description.language === 'object') || !description.language || !('name' in description.language) || !(typeof description.language.name === 'string')) return 'No data'
+
+            
+            if(description.version_group.name !== 'scarlet-violet' || description.language.name !== 'en') {
+                continue
+            } else {
+                descriptionAbility = description?.flavor_text
+                break
+            }
+        }
+        return descriptionAbility || 'No data'
+    } catch {
+        return 'No data'
+    }
+    
 }
 
 async function getPokemonPageData(id:number = 1): Promise<TPokemonPageData | null>  {
     const json = await fetch(URL_API + `/pokemon/${id}`)
     const pokemonData = await json.json()
 
+    console.log(pokemonData)
+
     if(!pokemonData || !(typeof pokemonData === 'object') || !('id' in pokemonData) || !(typeof pokemonData.id === 'number')) return null
     
-    const mem: TPokemonPageData = {
+    const pokemonSpecifications: TPokemonPageData = {
         name: pokemonData?.name,
-        description: await getDescriptionPokemonForm(id),
+        description: await getDescriptionPokemonForm(id) || 'No data',
         img: pokemonData?.sprites?.front_default || '/assets/img/001.png',
-        id: pokemonData.id,
-        height: convertHeightToInches(pokemonData.height * 10),
-        weight: convertWeightToLbs(pokemonData.weight / 10),
+        id: pokemonData?.id,
+        height: convertHeightToInches(pokemonData?.height * 10),
+        weight: convertWeightToLbs(pokemonData?.weight / 10),
         gender: await getGendersForPokemon(pokemonData?.name, await getAllGendersPokemon()),
-        category: '',
+        category: 'No data',
+        abilities: await Promise.all(pokemonData?.abilities?.map(async (currentAbility: unknown) => {
+
+            if(!currentAbility || !(typeof currentAbility === 'object') || !('is_hidden' in currentAbility) || currentAbility.is_hidden || !('ability' in currentAbility) || !(typeof currentAbility.ability === 'object') || !currentAbility.ability || !('name' in currentAbility.ability && 'url' in currentAbility.ability) || !(typeof currentAbility.ability.name === 'string' && typeof currentAbility.ability.url === 'string')) return false
+
+            return {
+                nameAbility: currentAbility?.ability?.name,
+                descriptionAbility: await getDescriptionPokemonAbilitie(currentAbility?.ability?.url)
+            }
+        }) || []),
+        
         types: await getTypesOfPokemon(pokemonData?.name),
         weaknesses: await getWeaknessesOfPokemon(await getTypesOfPokemon(pokemonData?.name)),
-        //stats:
+        stats: pokemonData?.stats?.map((statValue:unknown) => {
+
+            if(!statValue || !(typeof statValue === 'object') || !('base_stat' in statValue) || !(typeof statValue.base_stat === 'number') || !('stat' in statValue) || !(typeof statValue.stat === 'object') || !statValue.stat || !('name' in statValue.stat) || !(typeof statValue.stat.name === 'string')) return {}
+
+            return {
+                nameStat: statValue?.stat?.name,
+                valueStat: statValue?.base_stat
+            }
+        }) || []
 
     }
-    console.log(mem)
 
-    return mem
+    pokemonSpecifications.abilities.filter(Boolean)
+    console.log(pokemonSpecifications)
+
+    return pokemonSpecifications
 }
 
-async function pokemonsForPagination(): Promise<TPokemonIdentification | null> {
+async function pokemonDataForPagination(): Promise<TPokemonIdentification | null> {
     try {
         const json = await fetch(URL_API + "/pokemon?limit=10000")
         const data = await json.json()
@@ -197,4 +249,4 @@ async function pokemonsForPagination(): Promise<TPokemonIdentification | null> {
     }
 }
 
-export {URL_API, getPokemon, getAllPokemons, pokemonsForPagination, getPokemonPageData};
+export {URL_API, getPokemon, getAllPokemons, pokemonDataForPagination, getPokemonPageData};

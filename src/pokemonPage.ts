@@ -1,5 +1,5 @@
 import './assets/styles/style.scss'
-import { pokemonsForPagination, getPokemonPageData } from './api/pokemonApi'
+import { pokemonDataForPagination, getPokemonPageData } from './api/pokemonApi'
 
 async function renderPokemonPage() {
     
