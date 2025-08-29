@@ -3,6 +3,7 @@ import type { TPokemonIdentification } from "../types/pokemonIdentification.type
 import type { TPokemonPageData } from "../types/pokemonPageData.type.ts";
 
 import { convertHeightToInches, convertWeightToLbs } from "../helpers/helpers.pokemonApi.ts";
+import type { TPokemonAbility } from "../types/pokemonAbility.type.ts";
 
 const URL_API:string = import.meta.env.VITE_URL_API
 
@@ -70,6 +71,43 @@ async function getDescriptionPokemonForm(id: number = 1): Promise<string> {
         return 'No data'
     }
     
+}
+
+async function getCategoryPokemon(pokemonName: string): Promise<string[]> {
+    try {
+        const allCategories: string[] = []
+        const urlSpecie = await fetch(`${URL_API}/pokemon-species/${pokemonName}`)
+        const specieSpecification = await urlSpecie.json()
+
+        const genera = specieSpecification.genera
+
+        const categoriesFiltered = genera.filter((element:unknown) => {
+            if( !element || 
+                !(typeof element === 'object') || 
+                !('language' in element) || 
+                !(typeof element.language === 'object') || 
+                !element.language || !('name' in element.language) || 
+                !(typeof element.language.name === 'string')
+            ) return []
+
+            return element.language.name === 'en'
+        })
+
+        categoriesFiltered.forEach((element:unknown) => {
+            if( !element || 
+                !(typeof element === 'object') || 
+                !('genus' in element) ||
+                !(typeof element.genus === 'string') ||
+                !element.genus
+            ) return {}
+            allCategories.push(element.genus)
+        })
+
+        return allCategories
+
+    } catch {
+        return []
+    }
 }
 
 async function getAllGendersPokemon(): Promise<string[]> {
@@ -167,7 +205,20 @@ async function getDescriptionPokemonAbilitie(url:string): Promise<string> {
         let descriptionAbility
 
         for (const description of arrayDescriptions) {
-            if(!description || !('flavor_text' in description) || !(typeof description.flavor_text === 'string') || !('version_group' in description) || !(typeof description.version_group === 'object') || !description.version_group || !('name' in description.version_group) || !(typeof description.version_group.name === 'string') || !('language' in description) || !(typeof description.language === 'object') || !description.language || !('name' in description.language) || !(typeof description.language.name === 'string')) return 'No data'
+            if( !description || 
+                !('flavor_text' in description) || 
+                !(typeof description.flavor_text === 'string') || 
+                !('version_group' in description) || 
+                !(typeof description.version_group === 'object') || 
+                !description.version_group || 
+                !('name' in description.version_group) || 
+                !(typeof description.version_group.name === 'string') || 
+                !('language' in description) || 
+                !(typeof description.language === 'object') || 
+                !description.language || 
+                !('name' in description.language) || 
+                !(typeof description.language.name === 'string')
+            ) return 'No data'
 
             
             if(description.version_group.name !== 'scarlet-violet' || description.language.name !== 'en') {
@@ -177,11 +228,36 @@ async function getDescriptionPokemonAbilitie(url:string): Promise<string> {
                 break
             }
         }
-        return descriptionAbility || 'No data'
+        return await descriptionAbility || 'No data'
     } catch {
         return 'No data'
     }
     
+}
+
+async function getAbilitiePokemon(pokemonAbilities: unknown[]): Promise<TPokemonAbility[]> {
+    try {
+
+        const resultAbilities: TPokemonAbility[] = []
+        for (const pokemonAbility of pokemonAbilities) {
+
+            if(!pokemonAbility || !(typeof pokemonAbility === 'object') || !('is_hidden' in pokemonAbility) || pokemonAbility.is_hidden || !('ability' in pokemonAbility) || !(typeof pokemonAbility.ability === 'object') || !pokemonAbility.ability || !('name' in pokemonAbility.ability && 'url' in pokemonAbility.ability) || !(typeof pokemonAbility.ability.name === 'string' && typeof pokemonAbility.ability.url === 'string')) continue
+
+            const nameAbility = pokemonAbility?.ability?.name
+            const descriptionAbility = await getDescriptionPokemonAbilitie(pokemonAbility?.ability?.url)
+            
+            const result = {
+                nameAbility,
+                descriptionAbility
+            }
+            resultAbilities.push(result)
+            
+        }
+        return resultAbilities
+
+    } catch {
+        return []
+    }
 }
 
 async function getPokemonPageData(id:number = 1): Promise<TPokemonPageData | null>  {
@@ -194,23 +270,14 @@ async function getPokemonPageData(id:number = 1): Promise<TPokemonPageData | nul
     
     const pokemonSpecifications: TPokemonPageData = {
         name: pokemonData?.name,
-        description: await getDescriptionPokemonForm(id) || 'No data',
+        description: await getDescriptionPokemonForm(id),
         img: pokemonData?.sprites?.front_default || '/assets/img/001.png',
         id: pokemonData?.id,
         height: convertHeightToInches(pokemonData?.height * 10),
         weight: convertWeightToLbs(pokemonData?.weight / 10),
         gender: await getGendersForPokemon(pokemonData?.name, await getAllGendersPokemon()),
-        category: 'No data',
-        abilities: await Promise.all(pokemonData?.abilities?.map(async (currentAbility: unknown) => {
-
-            if(!currentAbility || !(typeof currentAbility === 'object') || !('is_hidden' in currentAbility) || currentAbility.is_hidden || !('ability' in currentAbility) || !(typeof currentAbility.ability === 'object') || !currentAbility.ability || !('name' in currentAbility.ability && 'url' in currentAbility.ability) || !(typeof currentAbility.ability.name === 'string' && typeof currentAbility.ability.url === 'string')) return false
-
-            return {
-                nameAbility: currentAbility?.ability?.name,
-                descriptionAbility: await getDescriptionPokemonAbilitie(currentAbility?.ability?.url)
-            }
-        }) || []),
-        
+        category: await getCategoryPokemon(pokemonData?.name),
+        abilities: await getAbilitiePokemon(pokemonData?.abilities),
         types: await getTypesOfPokemon(pokemonData?.name),
         weaknesses: await getWeaknessesOfPokemon(await getTypesOfPokemon(pokemonData?.name)),
         stats: pokemonData?.stats?.map((statValue:unknown) => {
@@ -224,8 +291,6 @@ async function getPokemonPageData(id:number = 1): Promise<TPokemonPageData | nul
         }) || []
 
     }
-
-    pokemonSpecifications.abilities.filter(Boolean)
     console.log(pokemonSpecifications)
 
     return pokemonSpecifications
