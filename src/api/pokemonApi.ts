@@ -1,27 +1,18 @@
-import type {TPokemonPreview} from "../types/pokemonPreview.type.ts";
-import type { TPokemonPageData } from "../types/pokemonPageData.type.ts";
-import type { TSpeciePokemonData } from "../types/speciePokemonData.type.ts";
-import type { TGeneraPokemonSpecies } from "../types/generaPokemonSpecies.type.ts";
-import type { TPokemonAbility } from "../types/pokemonAbility.type.ts";
-import type {TPokemonAbilityDescription} from "../types/pokemonAbilityDescription.type.ts";
+import type { TPokemonPreview } from "../types/pokemonPreview.type.ts";
+import type { TPokemonPageData, TSpeciePokemonData, TGeneraPokemonSpecies, TPokemonAbility, TPokemonAbilityDescription } from "../types/pokemonPage.types.ts";
 
-import {convertHeightToInches, convertWeightToLbs, getPokemonStats} from "../helpers/helpers.pokemonApi.ts";
+import { convertHeightToInches, convertWeightToLbs, getPokemonStats } from "../helpers/helpers.pokemonApi.ts";
 
-import { isPokemonPreview } from "../types/guards/isPokemon.guard.ts";
-import { isPokemonShortResponse } from "../types/guards/isPokemonShortResponse.guard.ts";
-import { isDescriptionPokemonForm } from "../types/guards/isDescriptionPokemonForm.guard.ts";
-import { isSpeciesData } from "../types/guards/isSpeciesData.guard.ts";
-import { isGeneraLanguage } from "../types/guards/isGeneraLanguage.guard.ts";
-import { isGeneraPokemon } from "../types/guards/isGenera.guard.ts";
-import { isPokemonGender } from "../types/guards/isPokemonGender.guard.ts";
-import { isGenderDetails } from "../types/guards/isGenderDetails.guard.ts";
-import { isPokemonGenderData } from "../types/guards/isPokemonGenderData.guard.ts";
-import { isPokemonType } from "../types/guards/isPokemonType.guard.ts";
-import { isPokemonWeaknessesData } from "../types/guards/isPokemonWeaknessData.guard.ts";
-import { isPokemonWeakness } from "../types/guards/isPokemonWeakness.guard.ts";
-import { isPokemonAbilityList } from "../types/guards/isPokemonAbilityList.guard.ts";
-import { isPokemonAbilityArrayDescriptions } from "../types/guards/isPokemonAbilityArrayDescriptions.guard.ts";
-import {isPokemonAbilityDescription} from "../types/guards/isPokemonAbilityDescription.guard.ts";
+import { isPokemonPreview, isPokemonShortResponse } from "../types/guards/pokemonListPage.guards.ts";
+import {
+    isDescriptionPokemonForm, isSpeciesData, isGeneraLanguage,
+    isGeneraPokemon, isPokemonGender, isGenderDetails,
+    isPokemonGenderData, isPokemonType, isPokemonWeaknessesData,
+    isPokemonWeakness, isPokemonAbilityList, isPokemonAbilityArrayDescriptions,
+    isPokemonAbilityDescription
+
+} from "../types/guards/pokemonDetailPage.guards.ts";
+
 
 const URL_API:string = import.meta.env.VITE_URL_API
 
@@ -316,5 +307,7 @@ async function getPokemonPageData(id:number = 1): Promise<TPokemonPageData | nul
 
     return pokemonSpecifications
 }
+
+
 
 export {URL_API, getPokemon, getAllPokemons, getPokemonPageData};

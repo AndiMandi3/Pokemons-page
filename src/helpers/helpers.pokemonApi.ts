@@ -1,7 +1,6 @@
-import type { TPokemonPageDataStats } from "../types/pokemonPageDataStats.type.ts";
-import type { TPokemonStat } from "../types/pokemonStat.type.ts";
+import type { TPokemonPageDataStats, TPokemonStat } from '../types/pokemonPage.types.ts'
 
-import { isPokemonStat } from "../types/guards/isPokemonStat.guard.ts";
+import { isPokemonStat } from "../types/guards/pokemonDetailPage.guards.ts";
 
 function convertHeightToInches(height: number): string {
     const totalInches = height / 2.54
