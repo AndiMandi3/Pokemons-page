@@ -327,8 +327,6 @@ async function getPokemonEvolutionChain(pokemonName: string) :Promise<TPokemonPr
 
         if(!evolutionData || !isPokemonEvolutionData(evolutionData)) return []
 
-        console.log(evolutionData)
-
         const evolutionDataChain:TPokemonEvolutionData[] = evolutionData.chain
 
         return await pokemonEvolutionTree(evolutionDataChain)
@@ -346,9 +344,9 @@ async function pokemonEvolutionTree(evolutionData: TPokemonEvolutionData[]): Pro
         }
 
         if(node.evolves_to && node.evolves_to.length > 0) {
-            node.evolves_to.forEach(evolve => {
-                traverse(evolve)
-            })
+             for(const evolve of node.evolves_to) {
+                await traverse(evolve)
+            }
         }
     }
 
