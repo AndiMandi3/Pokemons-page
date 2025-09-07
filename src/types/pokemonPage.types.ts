@@ -1,3 +1,5 @@
+import type {TPokemonPreview} from "./pokemonPreview.type.ts";
+
 type TPokemonPageData = {
     name: string,
     description: string,
@@ -14,6 +16,7 @@ type TPokemonPageData = {
     types: string[],
     weaknesses: string[],
     stats: TPokemonPageDataStats[],
+    evolution: TPokemonPreview[]
 }
 
 type TPokemonPageDataStats = {
@@ -115,8 +118,27 @@ type TSpeciePokemonData = {
     id: number,
     name: string,
     flavor_text_entries: TPokemonDescription[],
-    genera: TGeneraPokemonSpecies[]
+    genera: TGeneraPokemonSpecies[],
+    evolution_chain: TPokemonEvolutionLink,
 }
+
+type TPokemonEvolutionLink = {
+    url: string
+}
+
+type TPokemonEvolution = {
+    id: number,
+    chain: TPokemonEvolutionData[]
+}
+
+type TPokemonEvolutionData = {
+    evolves_to: TPokemonEvolutionData[]
+    species: {
+        name: string,
+        url: string
+    }
+}
+
 
 export type {
     TPokemonPageData,
@@ -134,5 +156,8 @@ export type {
     TPokemonWeaknessesData,
     TPokemonWeakness,
     TShortResponse,
-    TSpeciePokemonData
+    TSpeciePokemonData,
+    TPokemonEvolutionLink,
+    TPokemonEvolution,
+    TPokemonEvolutionData
 }

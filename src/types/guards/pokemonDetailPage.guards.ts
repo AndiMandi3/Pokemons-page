@@ -3,7 +3,7 @@ import type {
     TPokemonAbility,
     TPokemonAbilityDescription,
     TPokemonAbilityDescriptionsArray,
-    TPokemonDescription,
+    TPokemonDescription, TPokemonEvolution, TPokemonEvolutionData, TPokemonEvolutionLink,
     TPokemonGenderData,
     TPokemonGenderDetail,
     TPokemonStatAlone,
@@ -158,6 +158,45 @@ function isSpeciesData(dataSpecies: unknown): dataSpecies is TSpeciePokemonData 
     )
 }
 
+function isPokemonEvolutionLink(evolution: unknown): evolution is TPokemonEvolutionLink {
+    return (
+        (evolution !== null)
+        && (typeof evolution === 'object')
+        &&('id' in evolution)
+        && ('evolution_chain' in evolution)
+        && (evolution.evolution_chain !== null)
+        && (typeof evolution.evolution_chain === 'object')
+        && ('url' in evolution.evolution_chain)
+        && (typeof evolution.evolution_chain.url === 'string')
+    )
+}
+
+function isPokemonEvolutionData(evolution: unknown): evolution is TPokemonEvolution {
+    return (
+        (evolution !== null)
+        && (typeof evolution === 'object')
+        && ('id' in evolution)
+        && ('chain' in evolution)
+        && (evolution.chain !== null)
+        && (typeof evolution.chain === 'object')
+    )
+}
+
+function isPokemonEvolutionChainData(evolution: unknown): evolution is TPokemonEvolutionData {
+    return (
+        (evolution !== null)
+        && (typeof evolution === 'object')
+        && ('species' in evolution)
+        && (typeof evolution.species === 'object')
+        && (evolution.species !== null)
+        && ('name' in evolution.species)
+        && (evolution.species.name !== null)
+        && (typeof evolution.species.name === 'string')
+        && ('evolves_to' in evolution)
+        && (typeof evolution.evolves_to === 'object')
+    )
+}
+
 export {
     isDescriptionPokemonForm,
     isGenderDetails,
@@ -172,5 +211,8 @@ export {
     isPokemonType,
     isPokemonWeakness,
     isPokemonWeaknessesData,
-    isSpeciesData
+    isSpeciesData,
+    isPokemonEvolutionLink,
+    isPokemonEvolutionData,
+    isPokemonEvolutionChainData
 }

@@ -28,7 +28,6 @@ function getPokemonStats (pokemonStats: TPokemonStat[]):TPokemonPageDataStats[] 
         })
     }
 
-    console.log(pokemonStats)
     return statsArray
 
 }
