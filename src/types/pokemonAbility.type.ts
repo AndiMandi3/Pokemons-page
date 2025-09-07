@@ -1,4 +1,7 @@
 export type TPokemonAbility = {
-    nameAbility: string,
-    descriptionAbility: string
+    ability: {
+        name: string,
+        url: string
+    }
+    is_hidden: boolean
 }

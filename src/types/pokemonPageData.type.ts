@@ -1,4 +1,4 @@
-import type { TPokemonAbility } from "./pokemonAbility.type"
+import type { TPokemonPageDataStats } from "./pokemonPageDataStats.type.ts";
 
 export type TPokemonPageData = {
     name: string,
@@ -9,11 +9,11 @@ export type TPokemonPageData = {
     weight: number | string,
     gender: string[],
     category: string[],
-    abilities: TPokemonAbility[],
+    abilities: {
+        nameAbility: string,
+        descriptionAbility: string
+    }[],
     types: string[],
     weaknesses: string[],
-    stats: [{
-        nameStat: string,
-        valueStat: number
-    }],
+    stats: TPokemonPageDataStats[],
 }

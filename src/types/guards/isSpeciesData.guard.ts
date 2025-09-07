@@ -1,5 +1,13 @@
-import type {TPokemonSpeciesData} from "../pokemonSpeciesData.type.ts";
+import type { TSpeciePokemonData } from "../speciePokemonData.type.ts";
 
-function isSpeciesData(dataSpecies: unknown): dataSpecies is TPokemonSpeciesData {
-    return (dataSpecies as TPokemonSpeciesData).id !== undefined && (dataSpecies as TPokemonSpeciesData).flavor_text_entries !== undefined
+
+export function isSpeciesData(dataSpecies: unknown): dataSpecies is TSpeciePokemonData {
+    return (
+        (typeof dataSpecies === "object")
+        && (dataSpecies !== null)
+        && ('id' in dataSpecies)
+        && ('flavor_text_entries' in dataSpecies)
+        &&(typeof dataSpecies.id === 'number')
+        &&(dataSpecies.flavor_text_entries !== null)
+    )
 }
