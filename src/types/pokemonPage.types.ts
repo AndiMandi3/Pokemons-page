@@ -128,15 +128,21 @@ type TPokemonEvolutionLink = {
 
 type TPokemonEvolution = {
     id: number,
-    chain: TPokemonEvolutionData[]
+    chain: TPokemonEvolutionData
 }
 
 type TPokemonEvolutionData = {
-    evolves_to: TPokemonEvolutionData[]
+    evolves_to: TPokemonEvolutionData[] | []
     species: {
         name: string,
         url: string
     }
+}
+
+type paginationPokemonList = {
+    next: string,
+    previous: string | null,
+    results: TShortResponse[]
 }
 
 
@@ -159,5 +165,6 @@ export type {
     TSpeciePokemonData,
     TPokemonEvolutionLink,
     TPokemonEvolution,
-    TPokemonEvolutionData
+    TPokemonEvolutionData,
+    paginationPokemonList,
 }

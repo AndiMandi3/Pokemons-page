@@ -1,4 +1,5 @@
 import type {
+    paginationPokemonList,
     TGeneraPokemonSpecies,
     TPokemonAbility,
     TPokemonAbilityDescription,
@@ -197,6 +198,20 @@ function isPokemonEvolutionChainData(evolution: unknown): evolution is TPokemonE
     )
 }
 
+function isPaginationUrl(url: unknown): url is paginationPokemonList {
+    return (
+        (url !== null)
+        && (typeof url === 'object')
+        && ('next' in url)
+        && ('previous' in url)
+        && (typeof url.next === 'string')
+        && (typeof url.previous === 'string' || typeof url.previous === null)
+        && ('results' in url)
+        && (url.results !== null)
+        && (typeof url.results === 'object')
+    )
+}
+
 export {
     isDescriptionPokemonForm,
     isGenderDetails,
@@ -214,5 +229,6 @@ export {
     isSpeciesData,
     isPokemonEvolutionLink,
     isPokemonEvolutionData,
-    isPokemonEvolutionChainData
+    isPokemonEvolutionChainData,
+    isPaginationUrl,
 }

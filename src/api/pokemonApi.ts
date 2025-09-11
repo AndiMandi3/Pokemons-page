@@ -12,11 +12,23 @@ import { convertHeightToInches, convertWeightToLbs, getPokemonStats } from "../h
 
 import { isPokemonPreview, isPokemonShortResponse } from "../types/guards/pokemonListPage.guards.ts";
 import {
-    isDescriptionPokemonForm, isSpeciesData, isGeneraLanguage,
-    isGeneraPokemon, isPokemonGender, isGenderDetails,
-    isPokemonGenderData, isPokemonType, isPokemonWeaknessesData,
-    isPokemonWeakness, isPokemonAbilityList, isPokemonAbilityArrayDescriptions,
-    isPokemonAbilityDescription, isPokemonEvolutionLink, isPokemonEvolutionData, isPokemonEvolutionChainData
+    isDescriptionPokemonForm,
+    isSpeciesData,
+    isGeneraLanguage,
+    isGeneraPokemon,
+    isPokemonGender,
+    isGenderDetails,
+    isPokemonGenderData,
+    isPokemonType,
+    isPokemonWeaknessesData,
+    isPokemonWeakness,
+    isPokemonAbilityList,
+    isPokemonAbilityArrayDescriptions,
+    isPokemonAbilityDescription,
+    isPokemonEvolutionLink,
+    isPokemonEvolutionData,
+    isPokemonEvolutionChainData,
+    isPaginationUrl
 
 } from "../types/guards/pokemonDetailPage.guards.ts";
 
@@ -327,7 +339,7 @@ async function getPokemonEvolutionChain(pokemonName: string) :Promise<TPokemonPr
 
         if(!evolutionData || !isPokemonEvolutionData(evolutionData)) return []
 
-        const evolutionDataChain:TPokemonEvolutionData[] = evolutionData.chain
+        const evolutionDataChain:TPokemonEvolutionData = evolutionData.chain
 
         return await pokemonEvolutionTree(evolutionDataChain)
     } catch {
@@ -335,15 +347,18 @@ async function getPokemonEvolutionChain(pokemonName: string) :Promise<TPokemonPr
     }
 }
 
-async function pokemonEvolutionTree(evolutionData: TPokemonEvolutionData[]): Promise<TPokemonPreview[]> {
+async function pokemonEvolutionTree(evolutionData: TPokemonEvolutionData): Promise<TPokemonPreview[]> {
     const evolutionList: TPokemonPreview[] = []
 
     async function traverse(node: TPokemonEvolutionData) {
         if (node && isPokemonEvolutionChainData(node)) {
-            evolutionList.push(await getPokemon(node.species.name))
+            const pokemon = await getPokemon(node.species.name)
+            if(pokemon) {
+                evolutionList.push(pokemon)
+            }
         }
 
-        if(node.evolves_to && node.evolves_to.length > 0) {
+        if (node.evolves_to && node.evolves_to.length > 0) {
              for(const evolve of node.evolves_to) {
                 await traverse(evolve)
             }
@@ -355,5 +370,39 @@ async function pokemonEvolutionTree(evolutionData: TPokemonEvolutionData[]): Pro
     return evolutionList
 }
 
+async function getPaginationData(offset: number=2) {
+    try {
+        const urlNextPagination = await fetch(URL_API + `/pokemon?offset=${offset}&limit=1`)
+        const urlData = await urlNextPagination.json()
+
+        const data = []
+        if(!urlData || !isPaginationUrl(urlData)) return
+
+        console.log(urlData)
+
+        for (const pokemon of urlData.results) {
+
+            if(!pokemon || !isPokemonShortResponse(pokemon)) return
+            const pokemonDataForPagination = await getPokemon(pokemon.name)
+            if(pokemonDataForPagination) {
+                data.push({
+                    id: pokemonDataForPagination.id,
+                    name: pokemonDataForPagination.name,
+                    url: URL_API + `/pokemon/${pokemonDataForPagination.name}`
+                })
+            }
+        }
+
+        console.log(data)
+
+        return data
+
+    } catch {
+        return
+    }
+
+}
+
+await getPaginationData()
 
 export {URL_API, getPokemon, getAllPokemons, getPokemonPageData};
