@@ -5,7 +5,8 @@ import type {
     TGeneraPokemonSpecies,
     TPokemonAbility,
     TPokemonAbilityDescription,
-    TPokemonEvolutionData
+    TPokemonEvolutionData,
+    TPokemonTypes
 } from "../types/pokemonPage.types.ts";
 
 import { convertHeightToInches, convertWeightToLbs, getPokemonStats } from "../helpers/helpers.pokemonApi.ts";
@@ -44,7 +45,7 @@ async function getPokemon(pokemonName: string): Promise<TPokemonPreview | null> 
         return {
             id: dataPokemon?.id,
             name: dataPokemon?.name,
-            types: await getTypesOfPokemon(dataPokemon?.name),
+            types: await getTypesOfPokemon(dataPokemon?.types),
             img: dataPokemon?.sprites?.front_default || '/assets/img/001.png'
         }
     } catch {
@@ -60,7 +61,9 @@ async function getPokemonData(pokemonName: string) {
         const dataPokemon = await urlPokemon.json()
 
         if(!dataPokemon && isPokemonPreview(dataPokemon)) return null
+
         return dataPokemon
+        
     } catch {
         return null
     }
@@ -74,8 +77,6 @@ async function getPokemonSpeciesData(pokemonName: string): Promise<TSpeciePokemo
         const data = await json.json()
 
         if (!data || !isSpeciesData(data)) return null
-
-        console.log(data)
 
         return data
     } catch {
@@ -207,17 +208,19 @@ async function getGendersForPokemon(name: string, genders: string[]): Promise<st
     }
 }
 
-async function getTypesOfPokemon(name: string): Promise<string[]> {
+async function getTypesOfPokemon(types: TPokemonTypes[]): Promise<string[]> {
     try {
-        if (!name) return []
-        const dataTypes = await getPokemonData(name)
+        if (!types) return []
 
-        return dataTypes?.types?.map((pokemon: unknown): string => {
+         const mem = types?.map((pokemon: unknown): string => {
+
             if(!pokemon || !isPokemonType(pokemon)) return ""
 
             return pokemon?.type?.name
 
         }) || []
+
+        return mem
     } catch {
         return []
     }
@@ -318,8 +321,8 @@ async function getPokemonPageData(name: string = 'bulbasaur'): Promise<TPokemonP
         gender: await getGendersForPokemon(pokemonPageData?.name, await getAllGendersPokemon()),
         category: await getCategoryPokemon(pokemonPageData?.name),
         abilities: await getAbilityPokemon(pokemonPageData?.abilities),
-        types: await getTypesOfPokemon(pokemonPageData?.name),
-        weaknesses: await getWeaknessesOfPokemon(await getTypesOfPokemon(pokemonPageData?.name)),
+        types: await getTypesOfPokemon(pokemonPageData?.types),
+        weaknesses: await getWeaknessesOfPokemon(await getTypesOfPokemon(pokemonPageData?.types)),
         stats: getPokemonStats(pokemonPageData?.stats) || [],
         evolution: await getPokemonEvolutionChain(pokemonPageData?.name),
 
@@ -370,39 +373,6 @@ async function pokemonEvolutionTree(evolutionData: TPokemonEvolutionData): Promi
     return evolutionList
 }
 
-async function getPaginationData(offset: number=2) {
-    try {
-        const urlNextPagination = await fetch(URL_API + `/pokemon?offset=${offset}&limit=1`)
-        const urlData = await urlNextPagination.json()
 
-        const data = []
-        if(!urlData || !isPaginationUrl(urlData)) return
-
-        console.log(urlData)
-
-        for (const pokemon of urlData.results) {
-
-            if(!pokemon || !isPokemonShortResponse(pokemon)) return
-            const pokemonDataForPagination = await getPokemon(pokemon.name)
-            if(pokemonDataForPagination) {
-                data.push({
-                    id: pokemonDataForPagination.id,
-                    name: pokemonDataForPagination.name,
-                    url: URL_API + `/pokemon/${pokemonDataForPagination.name}`
-                })
-            }
-        }
-
-        console.log(data)
-
-        return data
-
-    } catch {
-        return
-    }
-
-}
-
-await getPaginationData()
 
 export {URL_API, getPokemon, getAllPokemons, getPokemonPageData};
