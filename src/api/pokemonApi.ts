@@ -28,7 +28,7 @@ import {
     isPokemonAbilityDescription,
     isPokemonEvolutionLink,
     isPokemonEvolutionData,
-    isPokemonEvolutionChainData, isShortResponse, isShortResponseForTypes,
+    isPokemonEvolutionChainData, isShortResponse, isShortResponseForTypes, isShortResponseForAbilities,
 
 } from "../types/guards/pokemonDetailPage.guards.ts";
 
@@ -79,6 +79,23 @@ async function getAllTypesOfPokemon(): Promise<string[]> {
             if(!type || !isShortResponseForTypes(type)) return ""
 
             return type?.name
+        }) || []
+    } catch {
+        return []
+    }
+}
+
+async function getAllAbilitiesOfPokemon(): Promise<string[]> {
+    try {
+        const urlAllAbilities = await fetch(URL_API + `/ability?limit=1000&offset=0`)
+        const dataAllAbilities = await urlAllAbilities.json()
+
+        if(!dataAllAbilities || !isShortResponse(dataAllAbilities)) return []
+
+        return dataAllAbilities?.results?.map((ability:unknown) => {
+            if(!ability || !isShortResponseForAbilities(ability)) return ""
+
+            return ability?.name
         }) || []
     } catch {
         return []
@@ -392,4 +409,4 @@ async function pokemonEvolutionTree(evolutionData: TPokemonEvolutionData): Promi
 
 
 
-export {URL_API, getPokemon, getAllPokemons, getPokemonPageData, getAllTypesOfPokemon};
+export {URL_API, getPokemon, getAllPokemons, getPokemonPageData, getAllTypesOfPokemon, getAllAbilitiesOfPokemon};

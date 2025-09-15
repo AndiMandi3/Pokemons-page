@@ -1,12 +1,12 @@
 import type { TPokemonPreview } from "../types/pokemonPreview.type"
-import { getAllPokemons, getAllTypesOfPokemon } from "../api/pokemonApi"
+import {getAllAbilitiesOfPokemon, getAllPokemons, getAllTypesOfPokemon} from "../api/pokemonApi"
 import { sortResult, globalLimit, createHTMLElement } from "../helpers/helpers.mainPage"
 
-async function renderTypesOnFilter(recievedFilters: string[]) {
+async function renderTypesOnFilter(recievedTypes: string[]) {
     const containerForFilters  = document.querySelector<HTMLDivElement>('.left-side__pokedex-filter-list')
 
     if(containerForFilters) {
-        for(const filter of recievedFilters) {
+        for(const filter of recievedTypes) {
 
             const wrapper: HTMLElement = createHTMLElement('div', ['pokedex-filter-list__filter-row'])
             const typeWrapper: HTMLElement = createHTMLElement('span', ['pill'], {textContent: filter.charAt(0).toUpperCase() + filter.slice(1)})
@@ -23,6 +23,7 @@ async function renderTypesOnFilter(recievedFilters: string[]) {
         }
     }
 }
+
 
 async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
     const resultDiv = document.querySelector<HTMLDivElement>('.result__row')
@@ -74,6 +75,7 @@ async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
 
 async function runResults() {
     const filterList = await getAllTypesOfPokemon()
+    const abilityList = await getAllAbilitiesOfPokemon()
     const pokemons = await getAllPokemons(globalLimit)
     const sortedPokemons = sortResult(pokemons)
 
