@@ -139,8 +139,8 @@ type TPokemonEvolutionData = {
     }
 }
 
-type paginationPokemonList = {
-    next: string,
+type shortResponse = {
+    next: string | null,
     previous: string | null,
     results: TShortResponse[]
 }
@@ -166,5 +166,5 @@ export type {
     TPokemonEvolutionLink,
     TPokemonEvolution,
     TPokemonEvolutionData,
-    paginationPokemonList,
+    shortResponse,
 }

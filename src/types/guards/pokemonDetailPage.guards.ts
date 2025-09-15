@@ -1,5 +1,5 @@
 import type {
-    paginationPokemonList,
+    shortResponse,
     TGeneraPokemonSpecies,
     TPokemonAbility,
     TPokemonAbilityDescription,
@@ -198,17 +198,28 @@ function isPokemonEvolutionChainData(evolution: unknown): evolution is TPokemonE
     )
 }
 
-function isPaginationUrl(url: unknown): url is paginationPokemonList {
+function isShortResponse(url: unknown): url is shortResponse {
     return (
         (url !== null)
         && (typeof url === 'object')
         && ('next' in url)
         && ('previous' in url)
-        && (typeof url.next === 'string')
-        && (typeof url.previous === 'string' || typeof url.previous === null)
+        && (typeof url.next === 'string' || url.next === null)
+        && (typeof url.previous === 'string' || url.previous === null)
         && ('results' in url)
         && (url.results !== null)
         && (typeof url.results === 'object')
+    )
+}
+
+function isShortResponseForTypes(type: unknown): type is TShortResponse {
+    return (
+        (type !== null)
+        && (typeof type === 'object')
+        && ('name' in type)
+        && ('url' in type)
+        && (typeof type.name === 'string')
+        && (typeof type.url === 'string')
     )
 }
 
@@ -230,5 +241,7 @@ export {
     isPokemonEvolutionLink,
     isPokemonEvolutionData,
     isPokemonEvolutionChainData,
-    isPaginationUrl,
+    isShortResponse,
+    isShortResponseForTypes,
+
 }

@@ -1,6 +1,28 @@
 import type { TPokemonPreview } from "../types/pokemonPreview.type"
-import { getAllPokemons } from "../api/pokemonApi"
+import { getAllPokemons, getAllTypesOfPokemon } from "../api/pokemonApi"
 import { sortResult, globalLimit, createHTMLElement } from "../helpers/helpers.mainPage"
+
+async function renderTypesOnFilter(recievedFilters: string[]) {
+    const containerForFilters  = document.querySelector<HTMLDivElement>('.left-side__pokedex-filter-list')
+
+    if(containerForFilters) {
+        for(const filter of recievedFilters) {
+
+            const wrapper: HTMLElement = createHTMLElement('div', ['pokedex-filter-list__filter-row'])
+            const typeWrapper: HTMLElement = createHTMLElement('span', ['pill'], {textContent: filter.charAt(0).toUpperCase() + filter.slice(1)})
+
+            const typeToggle: HTMLElement = createHTMLElement('span', ['filter', 'type-filter', 'toggle'], {textContent: 'T'})
+
+            const weakToggle: HTMLElement = createHTMLElement('span', ['filter', 'weakness-filter', 'toggle'], {textContent: 'W'})
+
+            wrapper.appendChild(typeWrapper)
+            wrapper.appendChild(typeToggle)
+            wrapper.appendChild(weakToggle)
+
+            containerForFilters.appendChild(wrapper)
+        }
+    }
+}
 
 async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
     const resultDiv = document.querySelector<HTMLDivElement>('.result__row')
@@ -51,8 +73,11 @@ async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
 }
 
 async function runResults() {
+    const filterList = await getAllTypesOfPokemon()
     const pokemons = await getAllPokemons(globalLimit)
     const sortedPokemons = sortResult(pokemons)
+
+    await renderTypesOnFilter(filterList)
     await renderPokemons(sortedPokemons)
 }
 
