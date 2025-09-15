@@ -70,7 +70,7 @@ async function getPokemonData(pokemonName: string) {
 
 async function getAllTypesOfPokemon(): Promise<string[]> {
     try {
-        const urlAllTypes = await fetch(URL_API + `type?limit=1000&offset=0`)
+        const urlAllTypes = await fetch(URL_API + `/type?limit=1000&offset=0`)
         const dataAllTypes = await urlAllTypes.json()
 
         if(!dataAllTypes || !isShortResponse(dataAllTypes)) return []
