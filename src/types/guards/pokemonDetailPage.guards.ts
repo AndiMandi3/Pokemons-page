@@ -234,6 +234,17 @@ function isShortResponseForAbilities(ability: unknown): ability is TShortRespons
     )
 }
 
+function isShortResponseForPagination(result: unknown): result is TShortResponse {
+    return (
+        (result !== null)
+        && (typeof result === 'object')
+        && ('name' in result)
+        && ('url' in result)
+        && (typeof result.name === 'string')
+        && (typeof result.url === 'string')
+    )
+}
+
 export {
     isDescriptionPokemonForm,
     isGenderDetails,
@@ -255,5 +266,6 @@ export {
     isShortResponse,
     isShortResponseForTypes,
     isShortResponseForAbilities,
-
+    isShortResponseForPagination,
+    
 }

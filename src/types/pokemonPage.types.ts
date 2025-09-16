@@ -16,7 +16,13 @@ type TPokemonPageData = {
     types: string[],
     weaknesses: string[],
     stats: TPokemonPageDataStats[],
-    evolution: TPokemonPreview[]
+    evolution: TPokemonPreview[],
+    dataForPagination: TNextPrevPokemons | null
+}
+
+type TNextPrevPokemons = {
+    nextName: string | null,
+    prevName: string | null
 }
 
 type TPokemonPageDataStats = {
@@ -167,4 +173,5 @@ export type {
     TPokemonEvolution,
     TPokemonEvolutionData,
     shortResponse,
+    TNextPrevPokemons
 }

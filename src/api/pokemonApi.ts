@@ -6,7 +6,8 @@ import type {
     TPokemonAbility,
     TPokemonAbilityDescription,
     TPokemonEvolutionData,
-    TPokemonTypes
+    TPokemonTypes,
+    TNextPrevPokemons
 } from "../types/pokemonPage.types.ts";
 
 import { convertHeightToInches, convertWeightToLbs, getPokemonStats } from "../helpers/helpers.pokemonApi.ts";
@@ -29,6 +30,7 @@ import {
     isPokemonEvolutionLink,
     isPokemonEvolutionData,
     isPokemonEvolutionChainData, isShortResponse, isShortResponseForTypes, isShortResponseForAbilities,
+    isShortResponseForPagination,
 
 } from "../types/guards/pokemonDetailPage.guards.ts";
 
@@ -355,7 +357,7 @@ async function getPokemonPageData(name: string = 'bulbasaur'): Promise<TPokemonP
             weaknesses: await getWeaknessesOfPokemon(await getTypesOfPokemon(pokemonPageData?.types)),
             stats: getPokemonStats(pokemonPageData?.stats) || [],
             evolution: await getPokemonEvolutionChain(pokemonPageData?.name),
-
+            dataForPagination: await paginationForDetailPage(pokemonPageData?.id)
         }
         console.log(pokemonSpecifications)
 
@@ -407,6 +409,53 @@ async function pokemonEvolutionTree(evolutionData: TPokemonEvolutionData): Promi
     return evolutionList
 }
 
+async function paginationForDetailPage(id: number): Promise<TNextPrevPokemons | null> {
+    try {
+        const data = await fetch(URL_API + `/pokemon?limit=1&offset=${id-1}`)
+        const json = await data.json()
+
+        if(!json || !isShortResponse(json)) return null
+
+        async function getPaginationDetails(nextUrl: string | null, prevUrl: string | null): Promise<TNextPrevPokemons | null> {
+            const result = {
+                nextName: nextUrl ? '' : null,
+                prevName: prevUrl ? '' : null
+            }
+
+            if(nextUrl) {
+                const dataNextUrl = await fetch(nextUrl)
+                const jsonNextUrl = await dataNextUrl.json()
+
+                if(!jsonNextUrl || !isShortResponse(jsonNextUrl)) return null
+
+                for(const dataNextUrl of jsonNextUrl.results) {
+                    if(!dataNextUrl || !isShortResponseForPagination(dataNextUrl)) continue
+
+                    result.nextName = dataNextUrl.name
+                    break
+                }
+            }
+
+            if(prevUrl) {
+                const dataPrevUrl = await fetch(prevUrl)
+                const jsonPrevUrl = await dataPrevUrl.json()
+
+                if(!jsonPrevUrl || !isShortResponse(jsonPrevUrl)) return null
+
+                for(const dataPrevUrl of jsonPrevUrl.results) {
+                    if(!dataPrevUrl || !isShortResponseForPagination(dataPrevUrl)) continue
+
+                    result.nextName = dataPrevUrl.name
+                    break
+                }
+            }
+            return result
+        }
+        return await getPaginationDetails(json.next, json.previous)
+    } catch {
+        return null
+    }
+}
 
 
-export {URL_API, getPokemon, getAllPokemons, getPokemonPageData, getAllTypesOfPokemon, getAllAbilitiesOfPokemon};
+export { URL_API, getPokemon, getAllPokemons, getPokemonPageData, getAllTypesOfPokemon, getAllAbilitiesOfPokemon }

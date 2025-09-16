@@ -32,4 +32,4 @@ function getPokemonStats (pokemonStats: TPokemonStat[]):TPokemonPageDataStats[] 
 
 }
 
-export {convertHeightToInches, convertWeightToLbs, getPokemonStats}
+export { convertHeightToInches, convertWeightToLbs, getPokemonStats }
