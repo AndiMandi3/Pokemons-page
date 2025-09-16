@@ -87,14 +87,20 @@ async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
     }
 }
 
-async function runResults() {
+async function renderFilters() {
     const filterList = await getAllTypesOfPokemon()
     const abilityList = await getAllAbilitiesOfPokemon()
-    const pokemons = await getAllPokemons(globalLimit)
-    const sortedPokemons = sortResult(pokemons)
 
     await renderAbilitiesOnFilter(abilityList)
     await renderTypesOnFilter(filterList)
+}
+
+async function runResults() {
+    await renderFilters()
+    
+    const pokemons = await getAllPokemons(globalLimit)
+    const sortedPokemons = sortResult(pokemons)
+
     await renderPokemons(sortedPokemons)
 }
 
