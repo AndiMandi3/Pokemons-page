@@ -3,6 +3,7 @@ import {getAllAbilitiesOfPokemon, getAllPokemons, getAllTypesOfPokemon} from "..
 import { sortResult, globalLimit, createHTMLElement } from "../helpers/helpers.mainPage"
 
 async function renderTypesOnFilter(recievedTypes: string[]) {
+    recievedTypes.sort()
     const containerForFilters  = document.querySelector<HTMLDivElement>('.left-side__pokedex-filter-list')
 
     if(containerForFilters) {
@@ -20,6 +21,19 @@ async function renderTypesOnFilter(recievedTypes: string[]) {
             wrapper.appendChild(weakToggle)
 
             containerForFilters.appendChild(wrapper)
+        }
+    }
+}
+
+async function renderAbilitiesOnFilter(recievedAbilites: string[]) {
+    recievedAbilites.sort()
+    const selectAbilityList = document.querySelector<HTMLSelectElement>('#select-custom__ability-selector')
+
+    if(selectAbilityList) {
+        for (const [index, ability]  of recievedAbilites.entries()) {
+            const optionAbility: HTMLElement = createHTMLElement('option', [], {value: `${index}`, textContent: `${ability.charAt(0).toUpperCase() + ability.slice(1)}`})
+
+            selectAbilityList.appendChild(optionAbility)
         }
     }
 }
@@ -79,6 +93,7 @@ async function runResults() {
     const pokemons = await getAllPokemons(globalLimit)
     const sortedPokemons = sortResult(pokemons)
 
+    await renderAbilitiesOnFilter(abilityList)
     await renderTypesOnFilter(filterList)
     await renderPokemons(sortedPokemons)
 }
