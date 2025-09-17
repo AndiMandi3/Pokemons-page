@@ -1,5 +1,5 @@
 import type { TPokemonPreview } from "../types/pokemonPreview.type"
-import { renderPokemons, runResults} from "../pages/renderMain"
+import { renderPokemons, runResults } from "../pages/renderMain"
 
 let globalLimit: number = 12
 
@@ -19,7 +19,7 @@ function createHTMLElement<T extends keyof HTMLElementTagNameMap>(T: string, cla
             if(key in  el) {
                 (el as any)[key] = value
             } else {
-                el.setAttribute(key, String(value))
+                if(value) el.setAttribute(key, value.toString())
             }
         })
     }
@@ -84,4 +84,4 @@ if(showFiltersButton) {
     })
 }
 
-export {sortResult, globalLimit, createHTMLElement}
+export { sortResult, globalLimit, createHTMLElement }

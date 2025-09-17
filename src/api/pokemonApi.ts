@@ -1,37 +1,39 @@
-import type { TPokemonPreview } from "../types/pokemonPreview.type.ts";
+import type {TPokemonPreview} from "../types/pokemonPreview.type.ts";
 import type {
-    TPokemonPageData,
-    TSpeciePokemonData,
     TGeneraPokemonSpecies,
+    TNextPrevPokemons,
     TPokemonAbility,
     TPokemonAbilityDescription,
     TPokemonEvolutionData,
+    TPokemonPageData,
     TPokemonTypes,
-    TNextPrevPokemons
+    TSpeciePokemonData
 } from "../types/pokemonPage.types.ts";
 
-import { convertHeightToInches, convertWeightToLbs, getPokemonStats } from "../helpers/helpers.pokemonApi.ts";
+import {convertHeightToInches, convertWeightToLbs, getPokemonStats} from "../helpers/helpers.pokemonApi.ts";
 
-import { isPokemonPreview, isPokemonShortResponse } from "../types/guards/pokemonListPage.guards.ts";
+import {isPokemonPreview, isPokemonShortResponse} from "../types/guards/pokemonListPage.guards.ts";
 import {
     isDescriptionPokemonForm,
-    isSpeciesData,
+    isGenderDetails,
     isGeneraLanguage,
     isGeneraPokemon,
-    isPokemonGender,
-    isGenderDetails,
-    isPokemonGenderData,
-    isPokemonType,
-    isPokemonWeaknessesData,
-    isPokemonWeakness,
-    isPokemonAbilityList,
     isPokemonAbilityArrayDescriptions,
     isPokemonAbilityDescription,
-    isPokemonEvolutionLink,
+    isPokemonAbilityList,
+    isPokemonEvolutionChainData,
     isPokemonEvolutionData,
-    isPokemonEvolutionChainData, isShortResponse, isShortResponseForTypes, isShortResponseForAbilities,
+    isPokemonEvolutionLink,
+    isPokemonGender,
+    isPokemonGenderData,
+    isPokemonType,
+    isPokemonWeakness,
+    isPokemonWeaknessesData,
+    isShortResponse,
+    isShortResponseForAbilities,
     isShortResponseForPagination,
-
+    isShortResponseForTypes,
+    isSpeciesData,
 } from "../types/guards/pokemonDetailPage.guards.ts";
 
 
@@ -343,7 +345,7 @@ async function getPokemonPageData(name: string = 'bulbasaur'): Promise<TPokemonP
     try {
         const pokemonPageData = await getPokemonData(name)
 
-        const pokemonSpecifications: TPokemonPageData = {
+        return {
             name: pokemonPageData?.name,
             description: await getDescriptionPokemonForm(name),
             img: pokemonPageData?.sprites?.front_default || '/assets/img/001.png',
@@ -359,9 +361,6 @@ async function getPokemonPageData(name: string = 'bulbasaur'): Promise<TPokemonP
             evolution: await getPokemonEvolutionChain(pokemonPageData?.name),
             dataForPagination: await paginationForDetailPage(pokemonPageData?.id)
         }
-        console.log(pokemonSpecifications)
-
-        return pokemonSpecifications
     } catch {
         return null
     }
@@ -418,8 +417,8 @@ async function paginationForDetailPage(id: number): Promise<TNextPrevPokemons | 
 
         async function getPaginationDetails(nextUrl: string | null, prevUrl: string | null): Promise<TNextPrevPokemons | null> {
             const result = {
-                nextName: nextUrl ? '' : null,
-                prevName: prevUrl ? '' : null
+                previous: prevUrl ? '' : null,
+                next: nextUrl ? '' : null
             }
 
             if(nextUrl) {
@@ -431,7 +430,7 @@ async function paginationForDetailPage(id: number): Promise<TNextPrevPokemons | 
                 for(const dataNextUrl of jsonNextUrl.results) {
                     if(!dataNextUrl || !isShortResponseForPagination(dataNextUrl)) continue
 
-                    result.nextName = dataNextUrl.name
+                    result.next = dataNextUrl.name
                     break
                 }
             }
@@ -445,7 +444,7 @@ async function paginationForDetailPage(id: number): Promise<TNextPrevPokemons | 
                 for(const dataPrevUrl of jsonPrevUrl.results) {
                     if(!dataPrevUrl || !isShortResponseForPagination(dataPrevUrl)) continue
 
-                    result.nextName = dataPrevUrl.name
+                    result.previous = dataPrevUrl.name
                     break
                 }
             }

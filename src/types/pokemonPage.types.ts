@@ -21,8 +21,8 @@ type TPokemonPageData = {
 }
 
 type TNextPrevPokemons = {
-    nextName: string | null,
-    prevName: string | null
+    next: string | null,
+    previous: string | null
 }
 
 type TPokemonPageDataStats = {
