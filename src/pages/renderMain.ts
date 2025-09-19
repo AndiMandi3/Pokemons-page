@@ -1,6 +1,7 @@
 import type { TPokemonPreview } from "../types/pokemonPreview.type"
 import {getAllAbilitiesOfPokemon, getAllPokemons, getAllTypesOfPokemon} from "../api/pokemonApi"
-import { sortResult, globalLimit, createHTMLElement } from "../helpers/helpers.mainPage"
+import { sortResult, globalLimit} from "../helpers/helpers.mainPage"
+import { createHTMLElement } from "../helpers/helpers.global"
 
 async function renderTypesOnFilter(recievedTypes: string[]) {
     recievedTypes.sort()

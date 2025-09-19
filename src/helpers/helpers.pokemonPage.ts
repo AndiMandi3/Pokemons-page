@@ -5,10 +5,12 @@ function renderPaginationForDetailPage(paginationData: TNextPrevPokemons) {
 
     if(paginationData.previous || paginationData.next) {
         for (const [nav, name] of Object.entries(paginationData)) {
-            if(name === null) continue
 
             const linkPokemon = document.createElement('a')
             linkPokemon.setAttribute('href', "#")
+            if(name === null) {
+                linkPokemon.setAttribute('href', location.host)
+            }
             linkPokemon.classList.add(`pokemon-pagination__${nav}`)
 
             const paginationWrapper = document.createElement('div')
@@ -24,6 +26,9 @@ function renderPaginationForDetailPage(paginationData: TNextPrevPokemons) {
             const nameSpan = document.createElement('span')
             nameSpan.classList.add('pokemon-pagination__name')
             nameSpan.textContent = name
+            if(name === null) {
+                nameSpan.textContent = 'Вернуться назад'
+            }
             paginationWrapper.appendChild(nameSpan)
 
             if(nav === 'next') {
