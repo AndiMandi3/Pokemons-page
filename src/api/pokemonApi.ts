@@ -4,6 +4,7 @@ import type {
     TNextPrevPokemons,
     TPokemonAbility,
     TPokemonAbilityDescription,
+    TPokemonDescVersions,
     TPokemonEvolutionData,
     TPokemonPageData,
     TPokemonTypes,
@@ -143,25 +144,32 @@ async function getAllPokemons(limit: number = 12): Promise<TPokemonPreview[]> {
     }
 }
 
-async function getDescriptionPokemonForm(pokemonName: string):Promise<string>  {
+async function getDescriptionPokemonForm(pokemonName: string):Promise<TPokemonDescVersions | string>  {
     try {
         const data: TSpeciePokemonData | null = await getPokemonSpeciesData(pokemonName);
 
-        if(!data) return 'No data';
+        const descriptions: TPokemonDescVersions = {
+            blue: '',
+            red: ''
+        }
+
+        if(!data) return 'No data'
 
         const allDescriptions = data.flavor_text_entries
 
-        let description = 'No data'
-
         for (const pokemonDescription of allDescriptions) {
-            if (!pokemonDescription || !isDescriptionPokemonForm(pokemonDescription)) return 'No data'
+            if (!pokemonDescription || !isDescriptionPokemonForm(pokemonDescription)) continue
 
             if (pokemonDescription.version.name === 'diamond') {
-                description = pokemonDescription.flavor_text
+                descriptions.blue = pokemonDescription.flavor_text
+            }
+
+            if(pokemonDescription.version.name === 'soulsilver') {
+                descriptions.red = pokemonDescription.flavor_text
                 break
             }
         }
-        return description
+        return descriptions
     } catch {
         return 'No data'
     }
@@ -350,13 +358,17 @@ async function getPokemonPageData(name: string = 'bulbasaur'): Promise<TPokemonP
             description: await getDescriptionPokemonForm(name),
             img: pokemonPageData?.sprites?.front_default || '/assets/img/001.png',
             id: pokemonPageData?.id,
-            height: convertHeightToInches(pokemonPageData?.height * 10),
-            weight: convertWeightToLbs(pokemonPageData?.weight / 10),
-            gender: await getGendersForPokemon(pokemonPageData?.name, await getAllGendersPokemon()),
-            category: await getCategoryPokemon(pokemonPageData?.name),
-            abilities: await getAbilityPokemon(pokemonPageData?.abilities),
-            types: await getTypesOfPokemon(pokemonPageData?.types),
-            weaknesses: await getWeaknessesOfPokemon(await getTypesOfPokemon(pokemonPageData?.types)),
+            mainInfo: {
+                Height: convertHeightToInches(pokemonPageData?.height * 10),
+                Category: await getCategoryPokemon(pokemonPageData?.name),
+                Weight: convertWeightToLbs(pokemonPageData?.weight / 10),
+                Abilities: await getAbilityPokemon(pokemonPageData?.abilities),
+                Gender: await getGendersForPokemon(pokemonPageData?.name, await getAllGendersPokemon()),
+            },
+            attributes: {
+                types: await getTypesOfPokemon(pokemonPageData?.types),
+                weaknesses: await getWeaknessesOfPokemon(await getTypesOfPokemon(pokemonPageData?.types)),
+            },
             stats: getPokemonStats(pokemonPageData?.stats) || [],
             evolution: await getPokemonEvolutionChain(pokemonPageData?.name),
             dataForPagination: await paginationForDetailPage(pokemonPageData?.id)

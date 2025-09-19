@@ -2,22 +2,27 @@ import type {TPokemonPreview} from "./pokemonPreview.type.ts";
 
 type TPokemonPageData = {
     name: string,
-    description: string,
+    description: TPokemonDescVersions | string,
     img: string,
     id: number,
-    height: string,
-    weight: number | string,
-    gender: string[],
-    category: string[],
-    abilities: {
-        nameAbility: string,
-        descriptionAbility: string
-    }[],
-    types: string[],
-    weaknesses: string[],
+    mainInfo: TPokemonMainInfo,
+    attributes: TPokemonAttributes,
     stats: TPokemonPageDataStats[],
     evolution: TPokemonPreview[],
     dataForPagination: TNextPrevPokemons | null
+}
+
+type TPokemonAttributes = {
+    types: string[],
+    weaknesses: string[],
+}
+
+type TPokemonMainInfo = {
+    Height: string,
+    Category: string[],
+    Weight: string,
+    Abilities: TPokemonAbilities[],
+    Gender: string[],
 }
 
 type TNextPrevPokemons = {
@@ -28,6 +33,11 @@ type TNextPrevPokemons = {
 type TPokemonPageDataStats = {
     nameStat: string,
     valueStat: number
+}
+
+type TPokemonAbilities = {
+    nameAbility: string,
+    descriptionAbility: string
 }
 
 type TPokemonGenderData = {
@@ -57,6 +67,11 @@ type TPokemonAbility = {
         url: string
     }
     is_hidden: boolean
+}
+
+type TPokemonDescVersions =  {
+    blue: string,
+    red: string
 }
 
 type TPokemonAbilityDescription = {
@@ -159,6 +174,7 @@ export type {
     TPokemonGenderDetail,
     TGeneraPokemonSpecies,
     TPokemonAbility,
+    TPokemonDescVersions,
     TPokemonAbilityDescription,
     TPokemonAbilityDescriptionsArray,
     TPokemonDescription,

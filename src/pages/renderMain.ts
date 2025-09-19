@@ -1,5 +1,5 @@
 import type { TPokemonPreview } from "../types/pokemonPreview.type"
-import {getAllAbilitiesOfPokemon, getAllPokemons, getAllTypesOfPokemon} from "../api/pokemonApi"
+import { getAllAbilitiesOfPokemon, getAllPokemons, getAllTypesOfPokemon } from "../api/pokemonApi"
 import { sortResult, globalLimit} from "../helpers/helpers.mainPage"
 import { createHTMLElement } from "../helpers/helpers.global"
 
@@ -64,7 +64,7 @@ async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
             pokemonId.prepend(idPrefix)
             pokemonPreview.appendChild(pokemonId)
 
-            const pokemonName: HTMLElement = createHTMLElement('h5', [], {textContent: element.name.charAt(0).toUpperCase() + element.name.slice(1), 'data-id': "123"})
+            const pokemonName: HTMLElement = createHTMLElement('h5', [], {textContent: element.name.charAt(0).toUpperCase() + element.name.slice(1)})
             pokemonPreview.appendChild(pokemonName)
             
             const divAbilities: HTMLElement = createHTMLElement('div', ['pokemon__abilities'])

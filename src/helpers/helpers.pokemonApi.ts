@@ -10,8 +10,8 @@ function convertHeightToInches(height: number): string {
     return  `${feet}' ${inches.toFixed(1)}"`
 }
 
-function convertWeightToLbs(weight: number): number | string {
-    return parseFloat((weight * 2.20462262).toFixed(1))
+function convertWeightToLbs(weight: number): string {
+    return parseFloat((weight * 2.20462262).toFixed(1)) + ' lbs'
 }
 
 function getPokemonStats (pokemonStats: TPokemonStat[]):TPokemonPageDataStats[] {
