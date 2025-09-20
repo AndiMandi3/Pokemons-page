@@ -46,10 +46,11 @@ async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
     if(recievedPokemons.length) {
 
         for (const element of recievedPokemons) {
-            
+
+
             const item: HTMLElement = createHTMLElement('div', ['result__item'])
 
-            const linkPokemon: HTMLElement = createHTMLElement('a', ['result__link'], {href: "#"})
+            const linkPokemon: HTMLElement = createHTMLElement('a', ['result__link'], {href: `${location.host}/${element.name}/`})
 
             const imgPokemon: HTMLElement = createHTMLElement('img', ['result__img'], {src: element.img})
             linkPokemon.appendChild(imgPokemon)

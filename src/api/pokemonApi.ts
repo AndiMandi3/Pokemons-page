@@ -1,4 +1,4 @@
-import type {TPokemonPreview} from "../types/pokemonPreview.type.ts";
+import type { TPokemonPreview } from "../types/pokemonPreview.type.ts";
 import type {
     TGeneraPokemonSpecies,
     TNextPrevPokemons,
@@ -11,9 +11,9 @@ import type {
     TSpeciePokemonData
 } from "../types/pokemonPage.types.ts";
 
-import {convertHeightToInches, convertWeightToLbs, getPokemonStats} from "../helpers/helpers.pokemonApi.ts";
+import { convertHeightToInches, convertWeightToLbs, getPokemonStats } from "../helpers/helpers.pokemonApi.ts";
 
-import {isPokemonPreview, isPokemonShortResponse} from "../types/guards/pokemonListPage.guards.ts";
+import { isPokemonPreview, isPokemonShortResponse } from "../types/guards/pokemonListPage.guards.ts";
 import {
     isDescriptionPokemonForm,
     isGenderDetails,
@@ -144,16 +144,18 @@ async function getAllPokemons(limit: number = 12): Promise<TPokemonPreview[]> {
     }
 }
 
-async function getDescriptionPokemonForm(pokemonName: string):Promise<TPokemonDescVersions | string>  {
+async function getDescriptionPokemonForm(pokemonName: string):Promise<TPokemonDescVersions | null>  {
     try {
+        if(!pokemonName) return null
+
         const data: TSpeciePokemonData | null = await getPokemonSpeciesData(pokemonName);
 
         const descriptions: TPokemonDescVersions = {
-            blue: '',
-            red: ''
+            blue: 'Zero',
+            red: 'Zero'
         }
 
-        if(!data) return 'No data'
+        if(!data || !isSpeciesData(data)) return null
 
         const allDescriptions = data.flavor_text_entries
 
@@ -171,7 +173,7 @@ async function getDescriptionPokemonForm(pokemonName: string):Promise<TPokemonDe
         }
         return descriptions
     } catch {
-        return 'No data'
+        return null
     }
     
 }

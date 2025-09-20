@@ -624,10 +624,14 @@ input {
     h3 {
       margin-top: 30px;
       color: black;
-      margin-bottom: 15px;
     }
-    .pokemon__abilities span {
-      font-size: 16px;
+    .pokemon__abilities {
+      display: flex;
+      flex-wrap: wrap;
+      span {
+        font-size: 16px;
+        margin-top: 10px;
+      }
     }
   }
 }
@@ -646,6 +650,14 @@ input {
     justify-content: space-around;
     margin-top: 30px;
   }
+
+  &__separator {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-left: 50px;
+  }
+
   &__pokemon-card {
     position: relative;
     display: inherit;
@@ -659,11 +671,15 @@ input {
       font-size: 48px;
       content: "\f105";
     }
+    &.with-separator::after {
+      content: none!important;
+    }
   }
 
   &__img {
     border: 5px solid white;
     border-radius: 50%;
+    padding: 30px;
   }
 
   &__pokemon-info {
@@ -681,7 +697,7 @@ input {
     content: "▲";
     font-size: 55px;
     position: absolute;
-    top: 93%;
+    top: 94%;
     left: -1%;
   }
 }

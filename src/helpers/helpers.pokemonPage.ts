@@ -1,4 +1,4 @@
-import type {TNextPrevPokemons} from "../types/pokemonPage.types.ts";
+import type { TNextPrevPokemons } from "../types/pokemonPage.types.ts";
 
 function renderPaginationForDetailPage(paginationData: TNextPrevPokemons) {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pokemon-pagination__buttons')
@@ -7,7 +7,7 @@ function renderPaginationForDetailPage(paginationData: TNextPrevPokemons) {
         for (const [nav, name] of Object.entries(paginationData)) {
 
             const linkPokemon = document.createElement('a')
-            linkPokemon.setAttribute('href', "#")
+            linkPokemon.setAttribute('href', `${location.host}/${name}`)
             if(name === null) {
                 linkPokemon.setAttribute('href', location.host)
             }
@@ -41,5 +41,4 @@ function renderPaginationForDetailPage(paginationData: TNextPrevPokemons) {
         }
     }
 }
-
-export { renderPaginationForDetailPage }
+export { renderPaginationForDetailPage}

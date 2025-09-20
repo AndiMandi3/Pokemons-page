@@ -1,8 +1,8 @@
-import type {TPokemonPreview} from "./pokemonPreview.type.ts";
+import type { TPokemonPreview } from "./pokemonPreview.type.ts";
 
 type TPokemonPageData = {
     name: string,
-    description: TPokemonDescVersions | string,
+    description: TPokemonDescVersions | null,
     img: string,
     id: number,
     mainInfo: TPokemonMainInfo,

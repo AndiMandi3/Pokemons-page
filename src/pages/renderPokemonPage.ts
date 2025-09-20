@@ -4,6 +4,7 @@ import type { TPokemonPageData } from "../types/pokemonPage.types.ts";
 import { renderPaginationForDetailPage } from "../helpers/helpers.pokemonPage.ts";
 import { getPokemonPageData } from "../api/pokemonApi.ts";
 import { createHTMLElement } from "../helpers/helpers.global.ts"
+import type {TPokemonPreview} from "../types/pokemonPreview.type.ts";
 
 function renderPokemonPage(receivedData: TPokemonPageData | null) {
     const paginationContainer = document.querySelector<HTMLDivElement>(".pokemon-pagination");
@@ -25,7 +26,7 @@ function renderPokemonPage(receivedData: TPokemonPageData | null) {
 
         const imgWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__pokemon-image'])
 
-        const imgPokemon: HTMLElement = createHTMLElement('img', [], {alt: receivedData?.name, src: receivedData?.img})
+        const imgPokemon: HTMLElement = createHTMLElement('img', [], {alt: receivedData?.name, src: receivedData?.img, loading: 'lazy'})
         imgWrapper.appendChild(imgPokemon)
         leftSidePokemon.appendChild(imgWrapper)
         
@@ -56,25 +57,28 @@ function renderPokemonPage(receivedData: TPokemonPageData | null) {
         leftSidePokemon.appendChild(statsWrapper)
         pokemonDetailContainer?.append(leftSidePokemon)
 
-        const descriptionPokemon: HTMLElement = createHTMLElement('p', ['pokemon-detail__description'], {textContent: receivedData.description.blue})
+        const descriptionPokemon: HTMLElement = createHTMLElement('p', ['pokemon-detail__description'], {textContent: receivedData?.description?.blue ?? 'No data'})
         rightSidePokemon.appendChild(descriptionPokemon)
 
         const versionsPokemonWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__pokemon-versions'])
         const versionsSpan: HTMLElement = createHTMLElement('span', [],  {textContent: "Versions"})
         versionsPokemonWrapper.appendChild(versionsSpan)
 
-        for(const [version] of Object.entries(receivedData.description)) {
-            const versionWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__version', `version-${version}`])
-            if(version === 'blue') {
-                versionWrapper.classList.add('active')
+        if(receivedData?.description) {
+            for(const [version] of Object.entries(receivedData.description)) {
+                const versionWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__version', `version-${version}`])
+                if(version === 'blue') {
+                    versionWrapper.classList.add('active')
+                }
+
+                const versionIcon:HTMLElement = createHTMLElement('span', ['icon', 'icon-pokeball'], {'data-version': version})
+
+                versionWrapper.appendChild(versionIcon)
+                versionsPokemonWrapper.appendChild(versionWrapper)
             }
+            rightSidePokemon.appendChild(versionsPokemonWrapper)
 
-            const versionIcon:HTMLElement = createHTMLElement('span', ['icon', 'icon-pokeball'])
-
-            versionWrapper.appendChild(versionIcon)
-            versionsPokemonWrapper.appendChild(versionWrapper)
         }
-        rightSidePokemon.appendChild(versionsPokemonWrapper)
 
         const pokemonInfoWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__pokemon-info'])
         const pokemonInfo: HTMLElement = createHTMLElement('div', ['pokemon-detail__ability-info'])
@@ -133,12 +137,97 @@ function renderPokemonPage(receivedData: TPokemonPageData | null) {
         }
         pokemonDetailContainer?.appendChild(rightSidePokemon)
         console.log(rightSidePokemon)
+
+        renderEvolutionPokemon(receivedData.evolution)
+        renderButtonToMain()
     }
 
 }
 
+function renderEvolutionPokemon(evolutionChain: TPokemonPreview[]) {
+    const evolutionSection = document.querySelector<HTMLElement>('.pokemon-evolution')
+
+    if(evolutionChain && evolutionSection) {
+
+        const evolutionWrapper: HTMLElement = createHTMLElement('div', ['pokemon-evolution__wrapper'])
+        const wrapperHeader: HTMLElement = createHTMLElement('div', ['pokemon-evolution__header'])
+        const header: HTMLElement = createHTMLElement('h3', [], {textContent: 'Evolutions'})
+
+        wrapperHeader.appendChild(header)
+        evolutionWrapper.appendChild(wrapperHeader)
+        evolutionSection.appendChild(evolutionWrapper)
+
+        const bodyEvolution: HTMLElement = createHTMLElement('div', ['pokemon-evolution__body'])
+        if(evolutionChain.length > 3) {
+            const firstEvolution = evolutionChain[0]
+            const lastsEvolutions = evolutionChain.slice(1)
+
+            cardForEvolutionPokemon(firstEvolution, bodyEvolution, 'with-separator')
+
+            const separator: HTMLElement = createHTMLElement('div', ['pokemon-evolution__separator'])
+            bodyEvolution.appendChild(separator)
+
+            for(const evolutions of lastsEvolutions) {
+                cardForEvolutionPokemon(evolutions, separator, 'with-separator')
+            }
+
+        } else {
+            for(const evolution of evolutionChain) {
+                cardForEvolutionPokemon(evolution, bodyEvolution)
+            }
+        }
+
+        evolutionWrapper.appendChild(bodyEvolution)
+        console.log(evolutionSection)
+        console.log(evolutionChain)
+    }
+}
+
+function cardForEvolutionPokemon(evolution: TPokemonPreview, container: HTMLElement, cssClass?: string) {
+    const linkWrapper:HTMLElement = createHTMLElement('a', ['pokemon-evolution__pokemon-card'], {href: `/${evolution.name}`})
+    const imgWrapper:HTMLElement = createHTMLElement('div', ['pokemon-evolution__img'])
+    const imgPokemon: HTMLElement = createHTMLElement('img', [], {src: evolution.img, alt: evolution.name, loading: 'lazy'})
+
+    imgWrapper.appendChild(imgPokemon)
+    linkWrapper.appendChild(imgWrapper)
+
+    const infoWrapper: HTMLElement = createHTMLElement('div', ['pokemon-evolution__pokemon-info'])
+    const namePokemon: HTMLElement = createHTMLElement('h3', ['pokemon-evolution__pokemon-name'], {textContent: evolution.name.charAt(0).toUpperCase() + evolution.name.slice(1) +  ' '})
+    const idPokemon: HTMLElement = createHTMLElement('span', [], {textContent: `#${(evolution.id/1000).toFixed(3).replace('.', '')}`})
+
+    namePokemon.appendChild(idPokemon)
+
+    const abilitiesPokemonWrapper:HTMLElement = createHTMLElement('div', ['pokemon__abilities'])
+
+    for(const type of evolution.types) {
+        const typeSpan:HTMLElement = createHTMLElement('span', [], {textContent: type.charAt(0).toUpperCase() + type.slice(1)})
+        abilitiesPokemonWrapper.appendChild(typeSpan)
+    }
+
+    infoWrapper.appendChild(namePokemon)
+    infoWrapper.appendChild(abilitiesPokemonWrapper)
+    linkWrapper.appendChild(infoWrapper)
+    if(cssClass) {
+        linkWrapper.classList.add(cssClass)
+    }
+
+    container.appendChild(linkWrapper)
+
+}
+
+function renderButtonToMain() {
+    const buttonWrapper = document.querySelector<HTMLDivElement>('.explore-more.full-content')
+    if (buttonWrapper) {
+        const buttonToMain: HTMLElement = createHTMLElement('a', ['full-content__button', 'button', 'button--orange'], {textContent: 'Explore More ', href: location.host})
+        const markeredText: HTMLElement = createHTMLElement('b', [], {textContent: 'Pokemon'})
+
+        buttonToMain.appendChild(markeredText)
+        buttonWrapper.appendChild(buttonToMain)
+    }
+}
+
 async function runRenderDetail() {
-    renderPokemonPage(await getPokemonPageData('19'))
+    renderPokemonPage(await getPokemonPageData('bulbasaur'))
 }
 
 export { runRenderDetail }
