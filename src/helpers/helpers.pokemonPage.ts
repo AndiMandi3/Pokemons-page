@@ -1,44 +1,22 @@
-import type { TNextPrevPokemons } from "../types/pokemonPage.types.ts";
-
-function renderPaginationForDetailPage(paginationData: TNextPrevPokemons) {
-    const paginationButtons = document.querySelector<HTMLDivElement>('.pokemon-pagination__buttons')
-
-    if(paginationData.previous || paginationData.next) {
-        for (const [nav, name] of Object.entries(paginationData)) {
-
-            const linkPokemon = document.createElement('a')
-            linkPokemon.setAttribute('href', `${location.host}/${name}`)
-            if(name === null) {
-                linkPokemon.setAttribute('href', location.host)
-            }
-            linkPokemon.classList.add(`pokemon-pagination__${nav}`)
-
-            const paginationWrapper = document.createElement('div')
-            paginationWrapper.classList.add('pokemon-pagination__wrapper')
+import type { TPokemonDescVersions } from "../types/pokemonPage.types.ts";
 
 
-            if(nav === 'previous') {
-                const arrowLeft = document.createElement('span')
-                arrowLeft.classList.add('icon', 'icon-arrow-left')
-                paginationWrapper.appendChild(arrowLeft)
-            }
+function switchDescription(version: keyof TPokemonDescVersions, descriptions: TPokemonDescVersions | null) {
+    const descriptionElement = document.querySelector<HTMLDivElement>('.pokemon-detail__description')
+    if(descriptionElement) {
+        descriptionElement.textContent = descriptions?.[version] || 'No data'
+    }
+    updateActivePokeBall(version)
+}
 
-            const nameSpan = document.createElement('span')
-            nameSpan.classList.add('pokemon-pagination__name')
-            nameSpan.textContent = name
-            if(name === null) {
-                nameSpan.textContent = 'Вернуться назад'
-            }
-            paginationWrapper.appendChild(nameSpan)
+function updateActivePokeBall(activeVersion: string) {
+    const allVersionsPokemon = document.querySelectorAll<HTMLDivElement>('.pokemon-detail__version')
+    allVersionsPokemon.forEach(version => {version.classList.remove('active')})
 
-            if(nav === 'next') {
-                const arrowRight = document.createElement('span')
-                arrowRight.classList.add('icon', 'icon-arrow-right')
-                paginationWrapper.appendChild(arrowRight)
-            }
-            linkPokemon.appendChild(paginationWrapper)
-            paginationButtons?.appendChild(linkPokemon)
-        }
+    const selectedWrapper = document.querySelector<HTMLDivElement>(`[data-version=${activeVersion}]`)
+    if(selectedWrapper) {
+        selectedWrapper.classList.add('active')
     }
 }
-export { renderPaginationForDetailPage}
+
+export { switchDescription }

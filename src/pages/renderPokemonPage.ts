@@ -1,10 +1,48 @@
 import '../assets/styles/style.scss'
 
-import type { TPokemonPageData } from "../types/pokemonPage.types.ts";
-import { renderPaginationForDetailPage } from "../helpers/helpers.pokemonPage.ts";
+import type {
+    TNextPrevPokemons,
+    TPokemonAbilities, TPokemonDescVersions,
+    TPokemonPageData
+} from "../types/pokemonPage.types.ts";
+import { switchDescription } from "../helpers/helpers.pokemonPage.ts";
 import { getPokemonPageData } from "../api/pokemonApi.ts";
 import { createHTMLElement } from "../helpers/helpers.global.ts"
 import type {TPokemonPreview} from "../types/pokemonPreview.type.ts";
+document.addEventListener("DOMContentLoaded", () => {
+
+})
+function renderPaginationForDetailPage(paginationData: TNextPrevPokemons | null) {
+    const paginationButtons = document.querySelector<HTMLDivElement>('.pokemon-pagination__buttons')
+
+    if(paginationData) {
+        for (const [nav, name] of Object.entries(paginationData)) {
+
+            const linkPokemon:HTMLElement = createHTMLElement('a', [`pokemon-pagination__${nav}`], {href: `/${name}`})
+            if(name === null) {
+                linkPokemon.setAttribute('href', location.origin)
+            }
+
+            const paginationWrapper:HTMLElement = createHTMLElement('div', ['pokemon-pagination__wrapper'])
+
+            if(nav === 'previous') {
+                const arrowLeft:HTMLElement = createHTMLElement('span', ['icon', 'icon-arrow-left'])
+                paginationWrapper.appendChild(arrowLeft)
+            }
+
+            const nameSpan:HTMLElement = createHTMLElement('span', ['pokemon-pagination__name'], {textContent: name ? name.charAt(0).toUpperCase() + name.slice(1) : 'Вернуться назад'})
+            paginationWrapper.appendChild(nameSpan)
+
+            if(nav === 'next') {
+                const arrowRight:HTMLElement = createHTMLElement('span', ['icon', 'icon-arrow-right'])
+                paginationWrapper.appendChild(arrowRight)
+            }
+            linkPokemon.appendChild(paginationWrapper)
+            paginationButtons?.appendChild(linkPokemon)
+        }
+    }
+}
+
 
 function renderPokemonPage(receivedData: TPokemonPageData | null) {
     const paginationContainer = document.querySelector<HTMLDivElement>(".pokemon-pagination");
@@ -29,7 +67,7 @@ function renderPokemonPage(receivedData: TPokemonPageData | null) {
         const imgPokemon: HTMLElement = createHTMLElement('img', [], {alt: receivedData?.name, src: receivedData?.img, loading: 'lazy'})
         imgWrapper.appendChild(imgPokemon)
         leftSidePokemon.appendChild(imgWrapper)
-        
+
         const statsWrapper:HTMLElement = createHTMLElement('div', ['pokemon-detail__pokemon-stats'])
         const anchorStats:HTMLElement = createHTMLElement('h3', [], {textContent: "Stats"})
 
@@ -64,14 +102,18 @@ function renderPokemonPage(receivedData: TPokemonPageData | null) {
         const versionsSpan: HTMLElement = createHTMLElement('span', [],  {textContent: "Versions"})
         versionsPokemonWrapper.appendChild(versionsSpan)
 
-        if(receivedData?.description) {
+        if(receivedData.description) {
             for(const [version] of Object.entries(receivedData.description)) {
-                const versionWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__version', `version-${version}`])
+                const versionWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__version', `version-${version}`], {'data-version': version})
                 if(version === 'blue') {
                     versionWrapper.classList.add('active')
                 }
 
-                const versionIcon:HTMLElement = createHTMLElement('span', ['icon', 'icon-pokeball'], {'data-version': version})
+                versionWrapper.addEventListener('click', () => {
+                    switchDescription(version as keyof TPokemonDescVersions, receivedData.description)
+                })
+
+                const versionIcon:HTMLElement = createHTMLElement('span', ['icon', 'icon-pokeball'])
 
                 versionWrapper.appendChild(versionIcon)
                 versionsPokemonWrapper.appendChild(versionWrapper)
@@ -82,19 +124,25 @@ function renderPokemonPage(receivedData: TPokemonPageData | null) {
 
         const pokemonInfoWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__pokemon-info'])
         const pokemonInfo: HTMLElement = createHTMLElement('div', ['pokemon-detail__ability-info'])
-        for (const [name, value] of Object.entries(receivedData?.mainInfo)) {
+        for (const [name, value] of Object.entries(receivedData.mainInfo)) {
 
-            const container: HTMLElement = createHTMLElement('div', [])
+            const container: HTMLElement = createHTMLElement('div', ['penis'])
             const infoTitle: HTMLElement = createHTMLElement('p', ['attribute-title'], {textContent: name})
             container.appendChild(infoTitle)
 
             let infoValue: HTMLElement = createHTMLElement('p', ['attribute-value'], {textContent: (name === 'Gender' || name === 'Abilities' || name === 'Category') ? '' : `${value}`})
 
             if(name === 'Abilities') {
-                infoValue.classList.add('more-info')
-                for(const ability of receivedData?.mainInfo?.Abilities) {
-                    infoValue = createHTMLElement('p', ['attribute-value', 'more-info'], {textContent: (ability.nameAbility).charAt(0).toUpperCase() + ability.nameAbility.slice(1)})
+                for(const ability of receivedData.mainInfo.Abilities) {
+                    infoValue = createHTMLElement('p', ['attribute-value', 'more-info'],
+                        {textContent: (ability.nameAbility).charAt(0).toUpperCase() + ability.nameAbility.slice(1),
+                            'data-ability': (ability.nameAbility).charAt(0).toUpperCase() + ability.nameAbility.slice(1)})
+
+                    infoValue.addEventListener('click', () => {
+                        renderAbilityWindow(pokemonInfoWrapper, ability)
+                    })
                     container.appendChild(infoValue)
+
                 }
             }
 
@@ -136,10 +184,11 @@ function renderPokemonPage(receivedData: TPokemonPageData | null) {
 
         }
         pokemonDetailContainer?.appendChild(rightSidePokemon)
-        console.log(rightSidePokemon)
 
         renderEvolutionPokemon(receivedData.evolution)
         renderButtonToMain()
+    } else {
+        pokemonDetailContainer!.innerHTML = "No data for preview"
     }
 
 }
@@ -178,8 +227,6 @@ function renderEvolutionPokemon(evolutionChain: TPokemonPreview[]) {
         }
 
         evolutionWrapper.appendChild(bodyEvolution)
-        console.log(evolutionSection)
-        console.log(evolutionChain)
     }
 }
 
@@ -224,6 +271,33 @@ function renderButtonToMain() {
         buttonToMain.appendChild(markeredText)
         buttonWrapper.appendChild(buttonToMain)
     }
+}
+
+function renderAbilityWindow(container: HTMLElement, abilityData: TPokemonAbilities) {
+    const abilityDescWrapper: HTMLElement = createHTMLElement('div', ['pokemon-detail__ability-desc'])
+    const abilityDescHeader: HTMLElement = createHTMLElement('div', ['pokemon-detail__ability-desc__header'])
+    const headerText: HTMLElement = createHTMLElement('h3', [], {textContent: 'Ability Info'})
+
+    abilityDescHeader.appendChild(headerText)
+    abilityDescWrapper.appendChild(abilityDescHeader)
+
+    const closeBtnWrapper: HTMLElement = createHTMLElement('div', ['close-button'])
+    const closeBtn: HTMLElement = createHTMLElement('button', [], {type: 'button', 'aria-label': 'Close', textContent: 'Close'})
+
+    closeBtnWrapper.appendChild(closeBtn)
+    abilityDescHeader.appendChild(closeBtnWrapper)
+
+    const abilityDescBody:HTMLElement = createHTMLElement('div', ['pokemon-detail__ability-desc__body'])
+    const abilityTitle: HTMLElement = createHTMLElement('h3', ['ability-title'], {textContent: abilityData.nameAbility})
+    const abilityText: HTMLElement = createHTMLElement('p', ['ability-text'], {textContent: abilityData.descriptionAbility})
+    abilityDescBody.appendChild(abilityTitle)
+    abilityDescBody.appendChild(abilityText)
+    abilityDescWrapper.appendChild(abilityDescBody)
+    container.appendChild(abilityDescWrapper)
+
+    closeBtn.addEventListener('click', () => {
+        abilityDescWrapper.remove()
+    })
 }
 
 async function runRenderDetail() {

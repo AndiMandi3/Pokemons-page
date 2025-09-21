@@ -177,6 +177,7 @@ export type {
     TPokemonDescVersions,
     TPokemonAbilityDescription,
     TPokemonAbilityDescriptionsArray,
+    TPokemonAbilities,
     TPokemonDescription,
     TPokemonStat,
     TPokemonStatAlone,

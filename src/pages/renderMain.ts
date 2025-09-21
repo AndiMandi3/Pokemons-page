@@ -50,9 +50,9 @@ async function renderPokemons(recievedPokemons:TPokemonPreview[]) {
 
             const item: HTMLElement = createHTMLElement('div', ['result__item'])
 
-            const linkPokemon: HTMLElement = createHTMLElement('a', ['result__link'], {href: `${location.host}/${element.name}/`})
+            const linkPokemon: HTMLElement = createHTMLElement('a', ['result__link'], {href: `/${element.name}/`})
 
-            const imgPokemon: HTMLElement = createHTMLElement('img', ['result__img'], {src: element.img})
+            const imgPokemon: HTMLElement = createHTMLElement('img', ['result__img'], {src: element.img, loading: 'lazy'})
             linkPokemon.appendChild(imgPokemon)
             item.appendChild(linkPokemon)
 
